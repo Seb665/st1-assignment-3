@@ -1,11 +1,11 @@
-# Stage 6 activities and evidence (ARE YU AFRAID?)
+# Stage 6 activities and evidence
 
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
-- Group/tutorial: [response]
-- Members, GitHub usernames and cohorts: [response]
-- Repository URL: [response]
-- Starting SHA: [response]
+- Group/tutorial: [Group 3, Thursday tutorial 2:30 - 4:30]
+- Members, GitHub usernames and cohorts: [Sebastian Riches Seb665 UG, Prajiet Eswaran Prajiet103 UG, Alexander Scola u3324662-Personal UG, Abril Perez u334202]
+- Repository URL: [https://github.com/Seb665/st1-assignment-3/blob/main/stage06/stage06_activities_and_evidence.md?plain=1]
+- Starting SHA: [...]
 
 ## A Requirement to issue activities
 
@@ -33,13 +33,13 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 ## B Commit quality
 
-| Original example | Strong or Weak | Reason |
-|---|---|---|
-| changes | [select] | [response] |
-| final version | [select] | [response] |
-| Add patient search by ID | [select] | [response] |
-| fix stuff | [select] | [response] |
-| Prevent cancellation of completed appointments | [select] | [response] |
+| Original example | Strong or Weak | Reason                          |
+|---|----------------|---------------------------------|
+| changes | [Weak]         | [Does not explain changes]      |
+| final version | [Weak]         | [Could provide greater clarfication] |
+| Add patient search by ID | [Strong]       | [Brief and explains and changes] |
+| fix stuff | [Weak]         | [Does not explain changes]      |
+| Prevent cancellation of completed appointments | [Strong]      | [States changes]                |
 
 ## C Over scoped PR review
 
