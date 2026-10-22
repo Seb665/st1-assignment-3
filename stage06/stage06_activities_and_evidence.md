@@ -1,4 +1,4 @@
-# Stage 6 activities and evidence
+# Stage 6 activities and evidence (ARE YU AFRAID?)
 
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
