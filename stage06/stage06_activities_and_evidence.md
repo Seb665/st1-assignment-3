@@ -11,8 +11,8 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 ### FR-02 Patient Search
 
-- Title: [response]
-- Context: [response]
+- Title: [Implement patient lookup by ID]
+- Context: [Clinic staff need to be able to retreive an existing patient using their patient ID. The lookup should return the patient already stored in SmartCare and clearly distinguish between an invalid ID and a valid ID that does not belong to a registered patient.]
 - Requirement: [response]
 - Acceptance criteria: [response]
 - Scope: [response]
