@@ -13,74 +13,75 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 - Title: [Implement patient lookup by ID]
 - Context: [Clinic staff need to be able to retreive an existing patient using their patient ID. The lookup should return the patient already stored in SmartCare and clearly distinguish between an invalid ID and a valid ID that does not belong to a registered patient.]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
+- Requirement: [Find a patient by patient ID.]
+- Acceptance criteria: [A known patient ID returns the actual registered Patient object, surrounding whitespace in a valid ID is handled according to the existing ID validation rules, patient IDs remain case-sensitive, a blank or invalid ID raises ValueError, a valid but unknown patient ID raises LookupError, Lookup does not create or replace patient records.]
+- Scope: [Implement PatientService.find_patient(patient_id) using the existing SmartCareDataStore. Add focused tests for valid, invalid and unknown patient IDs. Do not change unrelated patient fields, introduce new search methods, add persistence or modify the overall architecture.]
+- Definition of Done: [Definition of Done: find_patient() returns the actual stored patient for a known ID, handles invalid and unknown IDs with the correct exceptions and passes focused tests. Existing tests remain passing, the change is reviewed by another team member through a PR, any feedback is resolved and the relevant evidence is recorded in the Stage 6 record.]
+- Owner: [Sebastian Riches]
 - Actual issue link: [response]
 
 ### FR-06 Appointment Cancellation with FR-07 retained history
 
-- Title: [response]
-- Context: [response]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
+- Title: [Implement appointment cancellation with retained history]
+- Context: [Clinic staff need to be able to cancel a scheduled appointment without removing its record from SmartCare. The cancelled appointment should remain available in the current session so its history can still be retrieved.]
+- Requirement: [FR-06 - Cancel only a SCHEDULED appointment. FR-07 - Retain the same appointment with CANCELLED status in current-session history.]
+- Acceptance criteria: [Cancelling a SCHEDULED appointment changes its status to CANCELLED, the cancellation operation returns the same stored Appointment object, the cancelled appointment remains stored and retrievable during the current session, attempting to cancel the same appointment again raises ValueError and does not change its state, attempting to cancel the same appointment again raises ValueError and does not change its state, attempting to cancel a COMPLETED appointment raises ValueError and does not change its state, a valid but unknown appointment ID raises LookupError, a blank or invalid appointment ID raises ValueError.]
+- Scope: [Implement AppointmentService.cancel_appointment(appointment_id) using the existing SmartCareDataStore and Appointment cancellation operation. Add focused tests for successful cancellation, retained history, invalid or unknown IDs and illegal cancellation attempts. Do not delete appointments, create replacement Appointment objects, directly change protected status fields, add persistence or modify unrelated booking behaviour.]
+- Definition of Done: [cancel_appointment() correctly cancels a stored SCHEDULED appointment and returns the same object while preserving it in session history. Invalid, unknown, repeated and illegal cancellation attempts produce the required errors without unintended state changes. Focused tests and the exsiting test suite pass, the change is reviewed through a PR, feedback is resolved and the Stage 6 evidence is recorded.]
+- Owner: [Sebastian Riches]
 - Actual issue link: [response]
 
 ## B Commit quality
 
-| Original example | Strong or Weak | Reason                          |
-|---|----------------|---------------------------------|
-| changes | [Weak]         | [Does not explain changes]      |
-| final version | [Weak]         | [Could provide greater clarfication] |
-| Add patient search by ID | [Strong]       | [Brief and explains and changes] |
-| fix stuff | [Weak]         | [Does not explain changes]      |
-| Prevent cancellation of completed appointments | [Strong]      | [States changes]                |
+| Original example | Strong or Weak | Reason                                                                                                                                                 |
+|---|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| changes | [Weak]         | [It does not explain what was changed or why, so another team member cannot understand the prupose of the commit without inspecting the diff.]         |
+| final version | [Weak]         | [It does not describe the actual engineering change and is also misleading because further changes may still be required.]                             |
+| Add patient search by ID | [Strong]       | [It clearly identifies the specific behaviour added, making the purpose of the commit easy to understand and trace to the patient search requirement.] |
+| fix stuff | [Weak]         | [It is vague and does not identify what problem was fixed, which makes the commit difficult to review or trace later.]                                 |
+| Prevent cancellation of completed appointments | [Strong]      | [It describes a specific behaviour change and makes clear what rule the commit is reinforcing.]                                                        |
 
 ## C Over scoped PR review
 
 A cancellation PR also renames unrelated patient fields, restructures unrelated code and adds a new dependency.
 
-- Scope concerns: [response]
-- Responsibility and architecture concerns: [response]
-- Testing and review concerns: [response]
-- Changes to remove or separate, with reasons: [response]
+- Scope concerns: [The PR contains changes that are unrelated to appointment cancellation. This makes the change larger than necessary and makes it harder to understand exactly what is required for FR-06 and FR-07.]
+- Responsibility and architecture concerns: [Restructuring unrelated code or changing patient fields could affect other parts of SmartCare without being required for the cancellation feature. Adding a new dependency may also introduce unnecessary complexity when the existing domain, service and data-store structure already supports the required behaviour.]
+- Testing and review concerns: [A larger PR is harder to review because the reviewer has to separate the cancellation changes from unrelated modifications. Passing tests alone would not prove that the unrelated changes are safe or necessary, so each change would need to be checked against its own requirements and responsibilities.]
+- Changes to remove or separate, with reasons: [The unrelated patient-field renaming, code restructuring and new dependency should be removed from the cancellation PR. If any of these changes are genuinely required, they should be handled as separate focused issues and PRs so they can be reviewed, tested and justified independently. The cancellation PR should contain only the changes needed to satisfy FR-06 and FR-07 and their related tests.]
 
 ## D Challenge a weak Copilot review
 
 GitHub Copilot says: "Looks good; tests pass."
 
-- Missing evidence: [response]
-- Follow-up review question 1: [response]
-- Follow-up review question 2: [response]
-- Follow-up review question 3: [response]
-- Follow-up review question 4: [response]
-- Follow-up review question 5: [response]
-- Additional questions if useful: [response]
+- Missing evidence: [The review does not identify which requirements were checked, which tests were actually run, whether the implementation follows the intended responsibilities, whether the assertions are meaningful or whether unrelated changes are present in the diff.]
+- Follow-up review question 1: [Which specific requirement and acceptance criteria does this implementation satisfy and what code in the diff supports that conclusion?]
+- Follow-up review question 2: [Which tests were actually run, what was the observed result and do those tests check the required behaviour rather than only confirming that an object exists?]
+- Follow-up review question 3: [Does the implementation preserve the intended responsibility boundaries between the domain object, service and data store? If not, identify the relevant lines.]
+- Follow-up review question 4: [Are invalid, unknown and illegal-state cases handled with the correct exceptions and is stored state unchanged after a rejected operation?]
+- Follow-up review question 5: [Does the diff contain any unrelated changes, unnecessary dependencies or modifications outside the issue scope that should be removed or separated?]
+- Additional questions if useful: [Does cancellation return and retain the same stored Appointment object rather than deleting or replacing it? Are any assumptions being made that are not stated in the SmartCare requirements?]
 
 ## E Team workflow agreement
 
-| Practice | Team agreement |
-|---|---|
-| Branch naming | [response] |
-| Commit message convention | [response] |
-| PR size | [response] |
-| Another-member review requirement | [response] |
-| Merge rule | [response] |
-| Significant Copilot disclosure rule | [response] |
+| Practice | Team agreement                                                                                                                                                                                               |
+|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Branch naming | [Feature work will use clear branch names describing the task, such as feature/patient-search and feature/appointment-cancellation. Initial repository/setup work may already exist on main.]                |
+| Commit message convention | [Use short, specific commit messages that describe the engineering change, perferably using an action such as Add, Fix, Prevent or Test. Avoid vague messages such as changes or 'fix stuff'.]               |
+| PR size | [Keep each pull request focused on one issue or closely related requirement. Avoid unrelated refactoring, dependencies or feature changes in the same PR.]                                                   |
+| Another-member review requirement | [Each feature PR should be reviewed by another group member before merge. If another member remains unavailable, this will be raised with the tutor and recorded honestly rather than fabricating a review.] |
+| Merge rule | [Merge feature work ino main only after the acceptance criteria and relevant tests are satisfied, review feedback is addressed and the required review has been obtained where possible.]                    |
+| Significant Copilot disclosure rule | [Record significnt GitHub Copilot assistance, inclduing the task or prompt, output summary, human check, Accept/Modify/Reject decision and verification evidence.]                                           |
 
 ## F Issue and backlog index
 
 Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
 
-| Issue link | Requirement | Owner | Acceptance criteria or precise link | Status |
-|---|---|---|---|---|
-| [issue 1] | [response] | [response] | [response] | [response] |
-| [issue 2] | [response] | [response] | [response] | [response] |
+| Issue link              | Requirement                                                                     | Owner              | Acceptance criteria or precise link                                                                                                                                                                                  | Status                          |
+|-------------------------|---------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| [add GitHub issue link] | [FR-02 - Find a patient by patient ID]                                          | [Sebastian Riches] | [Known patient ID returns the actual registered Patient object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-sensitive.]                                 | [Drafted - issue to be created] |
+| [add GitHub issue link] | [FR-03 supporting operation - Practitioner lookup]                              | [Sebastian Riches]  | [Known practitioner ID returns the actual registered Practitioner object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-senstitive.]                      | [Drafted - issue to be created] |
+| [add GitHub issue link] | [FR-06 - Cancel only a SCHEDULED appointment; FR-07 - Retain cancelled history] | [Sebastian Riches]  | [Cancelling a SCHEDULED appointment changes the same stored object to CANCELLED and keeps it retrievable. Repeated or illegal cancellation raises ValueError without changing state; unknown ID raises LookupError.] | [Drafted - issue to be created] |
 
 ## G Pull request evidence
 
