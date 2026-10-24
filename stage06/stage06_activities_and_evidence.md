@@ -18,7 +18,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Scope: [Implement PatientService.find_patient(patient_id) using the existing SmartCareDataStore. Add focused tests for valid, invalid and unknown patient IDs. Do not change unrelated patient fields, introduce new search methods, add persistence or modify the overall architecture.]
 - Definition of Done: [Definition of Done: find_patient() returns the actual stored patient for a known ID, handles invalid and unknown IDs with the correct exceptions and passes focused tests. Existing tests remain passing, the change is reviewed by another team member through a PR, any feedback is resolved and the relevant evidence is recorded in the Stage 6 record.]
 - Owner: [Sebastian Riches]
-- Actual issue link: [response]
+- Actual issue link: [https://github.com/Seb665/st1-assignment-3/issues/1]
 
 ### FR-06 Appointment Cancellation with FR-07 retained history
 
@@ -29,7 +29,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Scope: [Implement AppointmentService.cancel_appointment(appointment_id) using the existing SmartCareDataStore and Appointment cancellation operation. Add focused tests for successful cancellation, retained history, invalid or unknown IDs and illegal cancellation attempts. Do not delete appointments, create replacement Appointment objects, directly change protected status fields, add persistence or modify unrelated booking behaviour.]
 - Definition of Done: [cancel_appointment() correctly cancels a stored SCHEDULED appointment and returns the same object while preserving it in session history. Invalid, unknown, repeated and illegal cancellation attempts produce the required errors without unintended state changes. Focused tests and the exsiting test suite pass, the change is reviewed through a PR, feedback is resolved and the Stage 6 evidence is recorded.]
 - Owner: [Sebastian Riches]
-- Actual issue link: [response]
+- Actual issue link: [https://github.com/Seb665/st1-assignment-3/issues/3]
 
 ## B Commit quality
 
@@ -77,11 +77,11 @@ GitHub Copilot says: "Looks good; tests pass."
 
 Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
 
-| Issue link              | Requirement                                                                     | Owner              | Acceptance criteria or precise link                                                                                                                                                                                  | Status                          |
-|-------------------------|---------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
-| [add GitHub issue link] | [FR-02 - Find a patient by patient ID]                                          | [Sebastian Riches] | [Known patient ID returns the actual registered Patient object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-sensitive.]                                 | [Drafted - issue to be created] |
-| [add GitHub issue link] | [FR-03 supporting operation - Practitioner lookup]                              | [Sebastian Riches]  | [Known practitioner ID returns the actual registered Practitioner object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-senstitive.]                      | [Drafted - issue to be created] |
-| [add GitHub issue link] | [FR-06 - Cancel only a SCHEDULED appointment; FR-07 - Retain cancelled history] | [Sebastian Riches]  | [Cancelling a SCHEDULED appointment changes the same stored object to CANCELLED and keeps it retrievable. Repeated or illegal cancellation raises ValueError without changing state; unknown ID raises LookupError.] | [Drafted - issue to be created] |
+| Issue link | Requirement                                                                     | Owner              | Acceptance criteria or precise link                                                                                                                                                                                  | Status                          |
+|----|---------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| [https://github.com/Seb665/st1-assignment-3/issues/1] | [FR-02 - Find a patient by patient ID]                                          | [Sebastian Riches] | [Known patient ID returns the actual registered Patient object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-sensitive.]                                 | [Drafted - issue to be created] |
+| [https://github.com/Seb665/st1-assignment-3/issues/2] | [FR-03 supporting operation - Practitioner lookup]                              | [Sebastian Riches]  | [Known practitioner ID returns the actual registered Practitioner object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-senstitive.]                      | [Drafted - issue to be created] |
+| [https://github.com/Seb665/st1-assignment-3/issues/3] | [FR-06 - Cancel only a SCHEDULED appointment; FR-07 - Retain cancelled history] | [Sebastian Riches]  | [Cancelling a SCHEDULED appointment changes the same stored object to CANCELLED and keeps it retrievable. Repeated or illegal cancellation raises ValueError without changing state; unknown ID raises LookupError.] | [Drafted - issue to be created] |
 
 ## G Pull request evidence
 
