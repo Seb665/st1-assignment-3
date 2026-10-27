@@ -87,46 +87,46 @@ Create at least two focused issues. Add a linked practitioner-lookup issue or an
 
 Repeat this block per PR. Record actual events, not planned approvals.
 
-- PR link and title: [response]
-- Linked issue and requirement: [response]
-- Feature branch: [response]
-- Changed behaviour: [response]
-- Meaningful commits: [links]
-- Test command, directory and observed result: [response]
-- Another-member reviewer: [response]
-- Human observations recorded before Copilot: [link and time]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [response]
-- Key feedback: [response]
-- Author response/change and verification: [response]
-- Reviewer recheck and approval: [link]
-- Merge outcome and SHA: [response]
-- Significant Copilot assistance: [summary or none]
-- Linked issue closure: [response]
-- Each member updated main: [member and confirmation]
-- Integrated verification after merge: [command, directory, result and code SHA]
+- PR link and title: [PR#4 - Add patient search by ID - https://github.com/Seb665/st1-assignment-3/pull/4]
+- Linked issue and requirement: [Issue #1 - implement patient lookup by ID; FR-02 - Find a patient by patient ID]
+- Feature branch: [feature/patient-search]
+- Changed behaviour: [PatientService.find_patient() now returns the actual registered Patient object for a known ID, accepts surrounding whitespace according to the existing validation rules, preserves case-sensitive IDs, raises ValueError for blank/invalid IDs and raises LookupError for a valid unknown ID.]
+- Meaningful commits: [840ed898853f33078ea8a71bd5da27a39c4db870 - Add patient search by ID]
+- Test command, directory and observed result: [From project/:python -m pytest tests/test_services.py -q -> 5 passed in 0.04s. python -m pytest -q -> 13 passed in 0.08s. Tested code SHA: 840ed898853f33078ea8a71bd5da27a39c4db870.]
+- Another-member reviewer: [Prajiet Esawaran - Prajiet103]
+- Human observations recorded before Copilot: [Prajiet reviewed the implementation and stated that the classes and implementation looked good and that the patient lookup code appeared solid.]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer didd not identify any problems with the implementation or class responsibilities. No changes were requested.]
+- Key feedback: [No corrective changes requested. Reviewer considered the implementation solid.]
+- Author response/change and verification: [Pending review feedback.]
+- Reviewer recheck and approval: [PR #4 approved by Prajiet103 - https://github.com/Seb665/st1-assignment-3/pull/4#pullrequestreview-5661468057]
+- Merge outcome and SHA: [PR #4 merged successfully into main. Integrated main SHA: 539cd8f8d5aab6fe4670bd35f0baf04c5f77ba9a.]
+- Significant Copilot assistance: [None used for the implementation.]
+- Linked issue closure: [Issue #1 closed through the merged PR.]
+- Each member updated main: [Pending merge.]
+- Integrated verification after merge: [From project/, python -m pytest -q -> 13 passed in 0.11s at SHA 539cd8f8d5aab6fe4670bd35f0baf04c5f77ba9a.]
 
 ## H Copilot collaboration record
 
 Record meaningful required use, not every trivial completion. Repeat per significant interaction.
 
-- Member and task: [response]
-- Prompt/purpose and relevant issue/diff: [response]
-- Summary of output: [response]
-- Human check against actual code, requirements and tests: [response]
-- Decision — Accept / Modify / Reject: [select]
-- Reason: [response]
-- Verification/evidence: [link and result]
+- Member and task: [Sebastian Riches - Github Copilot review of PR #4, patient lookup implementation.]
+- Prompt/purpose and relevant issue/diff: [Copilot was asked to review the actual FR-02 patient lookup implementation and tests against the requirement, acceptance, criteria, SmartCare responsibilities and observed test evidence after the human review had already been completed.]
+- Summary of output: [Copilot found no critical issues and considered the implementation broadly consistent with FR-02. It correctly identified that validation and whitespace handling are delegated to SmartCareDataStore, but raised this as an important concern. It also suggested additional testing for malformed non-blank IDs and explicit no-mutation behaviour. Copilot considered the implementaiton focused, maintainable and consistent with the service responsibilities.]
+- Human check against actual code, requirements and tests: [The datastore contract was checked and confirms that find_patient() already validates and trims the ID through the supplied required_text() logic. The published ID contract requires strings that are trimmed, non-blank and case-sensitive; it does not define an additional malformed-ID format. The existing tests cover known lookup, whitespace handling, unknown IDs, blank IDs and case sesitivity, including object identity.]
+- Decision — Accept / Modify / Reject: [Modify]
+- Reason: [Copilot's overall review was useful, however its concerns required human interpretation. The suggestion to confirm datastore validation was useful and was verified. The claim that service-level validation was potentially missing was rejected because delegation to the datastore is the intended architecture. The suggested malformed non-blank ID test was rejected because no such format rule exists. The no-mutation test suggestion was teated as optional rather than required. The positive maintainability assessment was accepted.]
+- Verification/evidence: [Human inspection confirmed that SmartCareDataStore.find_patient() performs the published ID validation and returns the stored object or None. Focused tests passed: 5 passed in 0.04s. Full suite passed: 13 passed in 0.08s. Tested SHA: 840ed898853f33078ea8a71bd5da27a39c4db870.]
 
 ## I Human versus Copilot review comparison
 
-- Human reviewer noticed before consulting Copilot: [response]
-- Copilot noticed: [response]
-- Overlap: [response]
-- What did the human reviewer notice that Copilot did not: [response]
-- What did Copilot identify that the human reviewer initially missed: [response]
-- Unsupported or incorrect Copilot suggestion: [response or none identified with explanation]
-- Human judgement accepted, modified or rejected, and why: [response]
-- Which evidence justified merge approval: [response]
+- Human reviewer noticed before consulting Copilot: [Prajiet reviewed the classes and patient lookup implementation and considered the implementation solid. He formally approved PR #4 and did not request any changes.]
+- Copilot noticed: [Copilot also found the implementation broadly correct and maintainable but questioned whether datastore validation was sufficient and suggested additional tests for malformed non-blank IDs and explicit no-mutation behaviour.]
+- Overlap: [Both the human reviewer and Copilot considered the implementation focused and consistent with the intended SmartCare structure and neither identified a critical defect.]
+- What did the human reviewer notice that Copilot did not: [The human reviewer accepted the implementation as suitable within the existing project structure without treating the intentional datastore delegation as a problem.]
+- What did Copilot identify that the human reviewer initially missed: [Copilot prompted an explicit check that SmartCareDataStore performs trimming and validation and suggested considering stronger regression evidence for non-mutation.]
+- Unsupported or incorrect Copilot suggestion: [Copilot suggested testing malformed non-blank patient IDs but the published contract does not define an additional ID format beyond string, trimmed, non-blank and case-sensitive. This suggestion was therefore not adopted.]
+- Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its suggestion to verify datastore validation was accepted as a useful check, however no implementation change was required because the datastore already owns that validation. The malformed-ID suggestion was rejected because it introduced an unstated rule, while the no-mutation suggestion was treated as optional.]
+- Which evidence justified merge approval: [The implementation satisfies FR-02 using the existing datastore responsibility, returns the actual registered Patient object and handles the required error cases. The focused suite passed 5 tests and the cumulative suite passed 13 tests at SHA 840ed898853f33078ea8a71bd5da27a39c4db870. PR #4 was independently reviewed and approved by Prajiet103 and the subsequent Copilot review identified no Critical defect.]
 
 ## J Contributions
 
@@ -145,49 +145,49 @@ Repeat per member. Include only categories that describe actual work; write not 
 
 Why is a high commit count not necessarily evidence of strong contribution?
 
-[response]
+[A high commit count does not necessarily show strong contribution because the commits could be very small, unclear or unnecessary. Strong contribution is better shown through meaningful implementation, testing, review, problem solving and evidence that the work actually meets the requirements.]
 
 ## L Stage 6 formative questions
 
 1. What is version control?
 
-[response]
+[Version control is a system that records changes made to files over time. It allows developers to track who changed something, compare versions and recover earlier work if necessary.]
 
 2. Why is a feature branch useful?
 
-[response]
+[A feature branch allows a developer to work on one focused change without directly changing the stable main branch. The work can then be tested and reviewed before it is merged into main.]
 
 3. What makes a commit a good engineering commit?
 
-[response]
+[A good engineering commit contains a clear and coherent change and uses a message that explains what was changed. It should be focused enough that another developer can understand and review its purpose.]
 
 4. What is a pull request?
 
-[response]
+[A pull request is a request to merge changes from one branch into another, usually into main. It allows the changes and Git diff to be reviewed and discussed before they are integrated.]
 
 5. What is the purpose of code review?
 
-[response]
+[Code review checks whether a change meets the requirements, follows the intended responsibilities, has suitable tests and does not introduce unrelated or incorrect changes. It also allows another developer to provide feedback before the work is merged.]
 
 6. What does a Git diff show?
 
-[response]
+[A Git diff shows the differences between versions of files, including lines that were added, removed or unchanged. It helps developers inspect exactly what has changed before committing, reviewing or merging work.]
 
 7. What is a Definition of Done?
 
-[response]
+[A Definition of Done describes the conditions that must be satisfied before work can be considered complete. In Stage 6 this includes more than writing code, such as meeting the requirement, meaningful tests, review, resolved feedback and appropriate evidence.]
 
 8. What is the appropriate role of GitHub Copilot in pull-request review?
 
-[response]
+[GitHub Copilot can act as a review assistant by identifying possible problems, missing tests or questions that should be investigated. Its suggestions are not proof, so a human must check them against the actual requirements, code, diff and observed test results before accepting, modifying or rejecting them.]
 
 9. Why should individual contribution not be judged only by commit count?
 
-[response]
+[Commit count does not show the quality or importance of the work. A person may make fewer commits but contribute significant implementation, testing, debugging, review or design work. Contribution should be judged using the actual engineering evidence and the value of the work completed.]
 
 10. What is the Stage 6 engineering rule?
 
-[response]
+[Take a requirement through a focused and traceable engineering process: define the issue, make the change on a branch, test it, review the actual diff, respond to feedback, verify the result and only then integrate it into main.]
 
 ## M Completion and handover
 
