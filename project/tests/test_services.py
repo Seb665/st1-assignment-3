@@ -3,7 +3,7 @@
 import pytest
 
 from smartcare.data_store import SmartCareDataStore
-from smartcare.services import PatientService
+from smartcare.services import PatientService, PractitionerService
 
 
 def test_find_patient_returns_registered_object() -> None:
@@ -54,3 +54,66 @@ def test_find_patient_id_is_case_sensitive() -> None:
         service.find_patient('p1')
 
     assert service.find_patient('P1') is patient
+
+
+
+def test_find_practitioner_returns_registered_object() -> None:
+    """A known ID returns the actual registered Practitioner object."""
+    data_store = SmartCareDataStore()
+    service = PractitionerService(data_store)
+    practitioner = service.register_practitioner(
+        'D1',
+        'Dr Taylor',
+        'General Practice',
+    )
+
+    result = service.find_practitioner('D1')
+
+    assert result is practitioner
+
+
+def test_find_practitioner_trims_surrounding_whitespace() -> None:
+    """Surrounding whitespace in a valid ID is ignored."""
+    data_store = SmartCareDataStore()
+    service = PractitionerService(data_store)
+    practitioner = service.register_practitioner(
+        'D1',
+        'Dr Taylor',
+        'General Practice',
+    )
+
+    assert service.find_practitioner('  D1  ') is practitioner
+
+
+def test_find_practitioner_unknown_id_raises_lookup_error() -> None:
+    """A valid but unknown practitioner ID reports absence."""
+    data_store = SmartCareDataStore()
+    service = PractitionerService(data_store)
+
+    with pytest.raises(LookupError):
+        service.find_practitioner('D999')
+
+
+def test_find_practitioner_blank_id_raises_value_error() -> None:
+    """A blank practitioner ID is invalid."""
+    data_store = SmartCareDataStore()
+    service = PractitionerService(data_store)
+
+    with pytest.raises(ValueError):
+        service.find_practitioner('   ')
+
+
+def test_find_practitioner_id_is_case_sensitive() -> None:
+    """Practitioner IDs remain case-sensitive."""
+    data_store = SmartCareDataStore()
+    service = PractitionerService(data_store)
+    practitioner = service.register_practitioner(
+        'D1',
+        'Dr Taylor',
+        'General Practice',
+    )
+
+    with pytest.raises(LookupError):
+        service.find_practitioner('d1')
+
+    assert service.find_practitioner('D1') is practitioner
