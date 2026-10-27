@@ -121,7 +121,25 @@ Repeat this block per PR. Record actual events, not planned approvals.
 - Significant Copilot assistance: [Github Copilot was used after the human review to review PR#5 against the stated practitioner lookup requirements. Its review was evaluated by Sebastian and recorded as Modify; no code changes were required.]
 - Linked issue closure: [Issue #2 closed through the merged PR.]
 - Each member updated main: [Sebastian updated local main after the merge. Other members not independently verified.]
-- Integrated verification after merge: [From project/, python -m pytest -m pytest -q -> 18 passed in 0.22s at SHA c3be270c61525548195f4b9aff746a9582a6984c.]
+- Integrated verification after merge: [From project/, python -m pytest -q -> 18 passed in 0.22s at SHA c3be270c61525548195f4b9aff746a9582a6984c.]
+
+PR link and title: [PR#6 - Add appointment cancellation and retained history - https://github.com/Seb665/st1-assignment-3/pull/6]
+- Linked issue and requirement: [Issue #3 - FR-06 appointment cancellation and FR-07 retained history]
+- Feature branch: [feature/appointment-cancellation]
+- Changed behaviour: [AppointmentService.cancel_appointment() now retrieves the existing stored appointment, raises LookupError for a valid unknown appointment ID, uses the existing Appointment.cancel() domain method to enforce valid state transitions, returns the same Appointment object after cancellation and retains it in current-session history with CANCELLED status.]
+- Meaningful commits: [5a52510 - Add appointment cancellation and retaiened history]
+- Test command, directory and observed result: [From project/: python -m pytest tests/test_services.py -q -> 15 passed. python -m pytest -q -> 23 passed. Tested code SHA: 5a52510.]
+- Another-member reviewer: [April Perez - 4brila1816-coder]
+- Human observations recorded before Copilot: [April reviewed and approved the appointment-cancellation cahnges.]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer did not identify any problems with the implementation. No changes were requested.]
+- Key feedback: [No corrective changes requested. April approved the pull request.]
+- Author response/change and verification: [No code changes were required following the human and Copilot reviews. The integrated version was verified after merge with 23 passing tests.]
+- Reviewer recheck and approval: [PR #6 approved by April Perez - 4brila1816-coder - https://github.com/Seb665/st1-assignment-3/pull/6]
+- Merge outcome and SHA: [PR#6 merged successfully into main. Integrated main SHA: 76e815c03416a03e7bb111d62b3fedca23782867.]
+- Significant Copilot assistance: [Github Copilot was used after the human review to review PR#6 against FR-06 and FR-07. Its review was evaluated by Sebastian and recorded as Modify; no code changes were required.]
+- Linked issue closure: [Issue #3 closed through the merged PR.]
+- Each member updated main: [Sebastian updated local main after the merge. Other members not independently verified.]
+  - Integrated verification after merge: [From project/, python -m pytest -q -> 23 passed in 0.14s at SHA 76e815c03416a03e7bb111d62b3fedca23782867.]
 
 ## H Copilot collaboration record
 
@@ -166,6 +184,26 @@ Record meaningful required use, not every trivial completion. Repeat per signifi
 - Unsupported or incorrect Copilot suggestion: [Copilot described the responsibility split as the service validating and looking up the practitioner ID while the datastore owns storage and retrieval. In the actual implementation, PractitionerService.find_practitioner() delegates both the existing ID validation and retrieval to SmartCareDataStore.find_practitioner(). This description was therefore corrected during the human check.]
 - Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its overall conclusion that the implementation was correct, focused and non-blocking was accepted. Its description of the validation responsibility was corrected to reflect the actual project design. The optional no-mutation test suggestion was considered useful but was not required by the stated Stage 6 contract and was therefore not adopted.]
 - Which evidence justified merge approval: [PR#5 was independently reviewed and approved by Alexander Scola. The focused service suite passed 10 tests and the full regression suite passed 18 tests at tested commit d21b085. The implementation returns the actual registered Practitioner object, preserves the required ID behaviour and uses the existing SmartCareDataStore responsibility. Copilot identified no critical or important defects.]
+
+
+Member and task: [Sebastian Riches - Github Copilot review of PR #6, appointment cancellation and retained-history implementation.]
+- Prompt/purpose and relevant issue/diff: [Copilot was asked to review the actual FR-06 and FR-07 appointment cancellation implementation and tests against the stated requirements, SmartCare responsibilities, state-preservation rules, scope and observed test evidence after the human review had already been completed.]
+- Summary of output: [Copilot found no critical or important issues and concluded that the implementation satisfies FR-06 and FR-07. It confirmed that cancellation is performed through Appointment.cancel(), only SCHEDULED appointments can be cancelled, the same stored Appointment object is retianed with CANCELLED status, repeated and COMPLETED cancellation are rejected, unknown IDs raise LookupError and blank/invalid IDs raise ValueError. Copilot also considered the change narrowly scoped. It suggested one Optional improvement: adding another explicit assertion that a failed cancellation leaves the datastore appointment list unchanged.]
+- Human check against actual code, requirements and tests: [The review was consistent with the actual implementation and requirements. AppointmentService.cancel_appointment() retrieves the existing appointment, delegates the state-transition to Appointment.cancel() and returns the same object without deleting or replacing it. The tests verify cancellation, retained identity and history, repeated cancellation rejection, unknown and blank IDs and COMPLETED state preservation. Copilot's reference to the datastore owning "persistence" was corrected because SmartCare uses session-only-in-memory storage and does not implement persistence.]
+- Decision — Accept / Modify / Reject: [Modify]
+- Reason: [Copilot's overall assessment was accepted because it correctly identified that the implementation satisfies FR-06 and FR-07, preserves the intended responsibilities and contains no blocking defects. Its use of the term "persistence" was modified to "session-only-in-memory storage/retention" to remain consistent with the assignment's requirements. The oprtional extra datastore-list assertion was considered but not adopted becuase the existing tests already verify retained object identity, history and unchanged state after rejected transitions. ]
+- Verification/evidence: [Focused service tests passed: 15 passed. Full regression suite passed: 23 passed. Commit: 5a52510. Human review was completed first by April Perez, who approved PR#6 without requesting changes.]
+
+## I Human versus Copilot review comparison
+
+- Human reviewer noticed before consulting Copilot: [April Perez reviewed the appointment-cancellation pull request and approved PR#6. No corrective changes were requested.]
+- Copilot noticed: [Copilot found no critical or important issues and confirmed that cancellation uses Appointment.cancel(), preserves the same stored object, retains CANCELLED history, rejects repeated and COMPLETED cancellation and handles invalid and unknown IDs using the required exception behaviour. It also suggested an optional additional assertion that a rejected cancellation leaves the datastore appointment list unchanged.]
+- Overlap: [Both April and Copilot considered the appointment-cancellation implementation acceptable and neither identified a blocking defect or requested a code change.]
+- What did the human reviewer notice that Copilot did not: [April assessed and approved the implemented change as a member of the group before any Copilot review was consulted.]
+- What did Copilot identify that the human reviewer initially missed: [Copilot provided a more detailed check of the domain, service and datastore responsibility split and explicitly considered state preservation for repeated and COMPLETED cancellation. It also suggested an optional additional assertion for unchanged datastore-list contents.]
+- Unsupported or incorrect Copilot suggestion: [Copilot referred to the datastore as owning "persistence". SmartCare does not implement persistence; the datastore retains objects only in memory for the current program session. This terminology was corrected during the human evaluation. The otpional additional list assertion was not incorrect but it was not required since the existing tests already provide meaningful retained-history and state-preservation evidence.]
+- Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its conclusion that the implementation satisfies FR-06 and FR-07 and contains no blocking defects was accepted. The persistence terminology was corrected to session-only in-memory storage/retention. The optional additional test assertion was considered but not adopted since the existing test suite already verifies the required behaviour.]
+- Which evidence justified merge approval: [PR#5 was independently reviewed and approved by April Perez. The focused service suite passed 15 tests and the full regression suite passed 23 tests at tested commit 5a52510. The implementation uses Appointment.cancel(), returns and retains the same stored Appointment object and correctly rejects invalid state transistions. Copilot identified no critical or important defects.]
 
 ## J Contributions
 
