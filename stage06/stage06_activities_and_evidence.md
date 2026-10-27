@@ -105,6 +105,24 @@ Repeat this block per PR. Record actual events, not planned approvals.
 - Each member updated main: [Pending merge.]
 - Integrated verification after merge: [From project/, python -m pytest -q -> 13 passed in 0.11s at SHA 539cd8f8d5aab6fe4670bd35f0baf04c5f77ba9a.]
 
+- PR link and title: [PR#5 - Add practitioner search by ID - https://github.com/Seb665/st1-assignment-3/pull/5]
+- Linked issue and requirement: [Issue #2 - FR-03 supporting practitioner lookup]
+- Feature branch: [feature/practitioner-search]
+- Changed behaviour: [PractitionerService.find_practitioner() now returns the actual registered Practitioner object for a known ID, accepts surrounding whitespace according to the existing validation rules, preserves case-sensitive IDs, raises ValueError for blank/invalid IDs and raises LookupError for a valid unknown ID.]
+- Meaningful commits: [d21b085 - Add practitioner search by ID]
+- Test command, directory and observed result: [From project/: python -m pytest tests/test_services.py -q -> 10 passed. python -m pytest -q -> 18 passed. Tested code SHA: d21b085.]
+- Another-member reviewer: [Alexander Scola - u3324662-Personal]
+- Human observations recorded before Copilot: [Alex reviewed the practitioner-search changes and stated: "The changes provide function to required features."]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer did not identify any problems with the implementation. No changes were requested.]
+- Key feedback: [No corrective changes requested. Alex approved the implementation as providing the required functionality.]
+- Author response/change and verification: [No code changes were required following the human and Copilot reviews. The integrated version was verified after merge with 18 passing tests.]
+- Reviewer recheck and approval: [PR #5 approved by Alexander Scola - u3324662-Personal - https://github.com/Seb665/st1-assignment-3/pull/5]
+- Merge outcome and SHA: [PR#5 merged successfully into main. Integrated main SHA: c3be270c61525548195f4b9aff746a9582a6984c.]
+- Significant Copilot assistance: [Github Copilot was used after the human review to review PR#5 against the stated practitioner lookup requirements. Its review was evaluated by Sebastian and recorded as Modify; no code changes were required.]
+- Linked issue closure: [Issue #2 closed through the merged PR.]
+- Each member updated main: [Sebastian updated local main after the merge. Other members not independently verified.]
+- Integrated verification after merge: [From project/, python -m pytest -m pytest -q -> 18 passed in 0.22s at SHA c3be270c61525548195f4b9aff746a9582a6984c.]
+
 ## H Copilot collaboration record
 
 Record meaningful required use, not every trivial completion. Repeat per significant interaction.
@@ -127,6 +145,27 @@ Record meaningful required use, not every trivial completion. Repeat per signifi
 - Unsupported or incorrect Copilot suggestion: [Copilot suggested testing malformed non-blank patient IDs but the published contract does not define an additional ID format beyond string, trimmed, non-blank and case-sensitive. This suggestion was therefore not adopted.]
 - Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its suggestion to verify datastore validation was accepted as a useful check, however no implementation change was required because the datastore already owns that validation. The malformed-ID suggestion was rejected because it introduced an unstated rule, while the no-mutation suggestion was treated as optional.]
 - Which evidence justified merge approval: [The implementation satisfies FR-02 using the existing datastore responsibility, returns the actual registered Patient object and handles the required error cases. The focused suite passed 5 tests and the cumulative suite passed 13 tests at SHA 840ed898853f33078ea8a71bd5da27a39c4db870. PR #4 was independently reviewed and approved by Prajiet103 and the subsequent Copilot review identified no Critical defect.]
+
+
+
+- Member and task: [Sebastian Riches - Github Copilot review of PR #5, practitioner lookup implementation.]
+- Prompt/purpose and relevant issue/diff: [Copilot was asked to review the actual FR-03 supporting practitioner lookup implementation and tests against the stated requirement, SmartCare responsibilities, scope and observed test evidence after the human review had already been completed.]
+- Summary of output: [Copilot found no critical or important issues and considered the implementation consistent with the stated pracitioner lookup requirements. It found the change narrowly scoped and considered the service and datastore responsibilities to be preserved. Copilot suggested one optional improvement: adding an explicit test to demonstrate that practitioner lookup does not insert or update datastore records.]
+- Human check against actual code, requirements and tests: [The implementation was checked against the actual code and requirements. PracitionerService.find_practioner() delegates validation and retrieval to SmartCareDataStore.find_practitioner(), which is consistent with the existing project design. The focused tests cover known practitioner lookup, surrounding whitespace, unknown IDs, blank IDs, case sensitivity and returning the actual registered Practitioner object. Copilot's statement that the service validates and looks up the ID was adjusted because validation and retrieval are actually delegated to the datastore.]
+- Decision — Accept / Modify / Reject: [Modify]
+- Reason: [Copilot's overall conclusion that the implementation was correct, focused and non-blocking was accepting. Its description of the service/datastore responsibility split was modified to reflect the actual implementation where the datastore performs the existing ID validation and retrieval. The optional no-mutation test was considered useful as additional evidence but was not adopted because the stated requirements do not require a separate mutation test and the implementation performs only a lookup.]
+- Verification/evidence: [Focused service tests passed: 10 passed. Full regression suite passed: 18 passed. Tested SHA: d21b085. Human review was completed first by Alexander Scola, who approved PR#5 and stated: "The changes provide function to required features."]
+
+## I Human versus Copilot review comparison
+
+- Human reviewer noticed before consulting Copilot: [Alex reviewed the practitioner lookup and approved it, stating that "The changes provide function to required features." No further changes were requested.]
+- Copilot noticed: [Copilot found no critical or important issues and considered the practitioner lookup correct, narrowly scoped and consistent with the stated requirements. It also suggested an optional explicit test to demonstrate that lookup does not insert or update datastore records.]
+- Overlap: [Both Alex and Copilot considered the practitioner lookup to provide the required functionality. Neither identified a critical defect.]
+- What did the human reviewer notice that Copilot did not: [Alex directly assessed the implemented feature and approved it as providing the required functionality within the existing project.]
+- What did Copilot identify that the human reviewer initially missed: [Copilot prompted a more explicit examination of the service and datastore responsibility split and suggested that an additional no-mutation test could provide stronger evidence, although it treated this as optional.]
+- Unsupported or incorrect Copilot suggestion: [Copilot described the responsibility split as the service validating and looking up the practitioner ID while the datastore owns storage and retrieval. In the actual implementation, PractitionerService.find_practitioner() delegates both the existing ID validation and retrieval to SmartCareDataStore.find_practitioner(). This description was therefore corrected during the human check.]
+- Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its overall conclusion that the implementation was correct, focused and non-blocking was accepted. Its description of the validation responsibility was corrected to reflect the actual project design. The optional no-mutation test suggestion was considered useful but was not required by the stated Stage 6 contract and was therefore not adopted.]
+- Which evidence justified merge approval: [PR#5 was independently reviewed and approved by Alexander Scola. The focused service suite passed 10 tests and the full regression suite passed 18 tests at tested commit d21b085. The implementation returns the actual registered Practitioner object, preserves the required ID behaviour and uses the existing SmartCareDataStore responsibility. Copilot identified no critical or important defects.]
 
 ## J Contributions
 
