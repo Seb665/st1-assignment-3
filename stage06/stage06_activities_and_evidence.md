@@ -209,14 +209,41 @@ Member and task: [Sebastian Riches - Github Copilot review of PR #6, appointment
 
 Repeat per member. Include only categories that describe actual work; write not applicable where appropriate. Pairing or mentoring can be supported by a short corroborated note.
 
-- Member: [response]
-- Implementation: [work and evidence]
-- Testing: [work and evidence]
-- Review: [work and evidence]
-- Issue refinement: [work and evidence]
+- Member: [Sebastian Riches - Seb665]
+- Implementation: [Implemented all three Stage 6 service operations: PatientService.find_patient(), PractitionerService.find_practitioner() and AppointmentService.cancel_appointment() through focused feature branches and pull requests.]
+- Testing: [Created and extended project/tests/test_services.py with tests for patient and practitioner lookup, invalid and unknown IDs, object identity, cancellation, retianed history, repeated cancellation and COMPLETED-state rejection. Ran focused and full regression tests throughout Stage 6. Final integrated result: python -m pytest -q -> 23 passed in 0.14s at SHA 76e815c03416a03e7bb111d62b3fedca23782867.]
+- Review: [Checked human-review feedback and then evaluated GitHub Copilot review output against the actual requirements, code and test evidence. Recorded Accept/Modify/Reject decisions rather than treating Copilot output as approval.]
+- Issue refinement: [Created and refined issue #1 for FR-02 patient lookup, issue #2 for the supporting FR-03 practitioner lookup and issue #3 for FR-06/FR-07 appointment cancellation and retained history, including acceptance criteria and scope.]
 - Design and responsibility discussion: [work and evidence]
-- Debugging or integration: [work and evidence]
-- Documentation or team support: [work and evidence]
+- Debugging or integration: [Corrected an indentation problem in the practitioner service tests, reran the affected tests, integrated each approved pull request into main and reran the full regression suite after merging.]
+- Documentation or team support: [Maintained the Stage 6 evidence record, including issue, branch, commit, PR, reviewer, Copilot and integration evidence and coordinated the feature/review workflow across the three Stage 6 changes.]
+
+Member: [Prajiet Eswaran - Prajiet103]
+- Implementation: [...]
+- Testing: [...]
+- Review: [Independently reviewed PR#4 for the FR-02 patient lookup before the Copilot review. Commented that the classes and implementation looked good and that the patient lookup appeared solid and approved the PR without requesting changes.]
+- Issue refinement: [...]
+- Design and responsibility discussion: [Reviewed the patient lookup implementation and its use of the existing classes as part of PR#4.]
+- Debugging or integration: [...]
+- Documentation or team support: [Provided the required human review and approval for PR#4.]
+
+Member: [Alexander Scola - u3324662]
+- Implementation: [...]
+- Testing: [work and evidence]
+- Review: [Independently reviewed PR#5 for the supporting practitioner lookup before the Copilot review. Stated that "The changes provide function to required features" and formally approved the PR without requesting changes.]
+- Issue refinement: [work and evidence]
+- Design and responsibility discussion: [Reviewed the practitioner lookup implementation through PR#5 and assessed whether the change provided the required functionality.]
+- Debugging or integration: [...]
+- Documentation or team support: [Provided written responses for the Stage 6 exit question in Section K and drafted responses to all ten Stage 6 formative questions in Section L. Also provided the required another member human review and approval for PR#5.]
+
+Member: [April Perez - 4brila1816-coder]
+- Implementation: [...]
+- Testing: [Independently reviewed PR#6 for FR-06 appointment cancellation and FR-07 retained history before the Copilot review and formally approved the PR without requesting corrective changes.]
+- Review: [Independently reviewed PR#6 for FR-06 appointment cancellation and FR-07 retained history before the Copilot review and formally approved the PR without requesting corrective changes.]
+- Issue refinement: [...]
+- Design and responsibility discussion: [Reviewed the appointment cancellation change through PR#6. No separate design discussion was recorded.]
+- Debugging or integration: [No separate debugging or integration activity recorded.]
+- Documentation or team support: [Provided the required human review and approval for PR#6.]
 
 ## K Exit question
 
@@ -268,25 +295,25 @@ Why is a high commit count not necessarily evidence of strong contribution?
 
 ## M Completion and handover
 
-- Starting SHA: [response]
-- Final Stage 6 code SHA: [response]
-- Test command: [response]
-- Working directory: [response]
-- Observed result: [response]
-- PR and another-member reviewer: [links]
-- Unresolved issue or none: [response]
+- Starting SHA: [1534cb73c50605ed7990b5c414699975947c0e01]
+- Final Stage 6 code SHA: [76e815c03416a03e7bb111d62b3fedca23782867]
+- Test command: [python -m pytest -q]
+- Working directory: [project/]
+- Observed result: [23 passed in 0.14s]
+- PR and another-member reviewer: [PR#4 - patient lookup - reviewed and approved by Prajiet Esawaran (Prajiet103); PR#5 - practitioner lookup - reviewed and approved by Alexander Scola (u3324662-Personal); PR#6 - appointment cancellation and retained history - reviewed and approved by April Perez (4brila1816-coder).]
+- Unresolved issue or none: [No known unresolved Stage 6 product-code defects. Confirmation that every other group member pulled the final main and independently reran the integrated checks has not been recorded.]
 - Stage 7 handover status: [ready for tutor checkpoint / unresolved work]
-- Final submitted SHA if later than tested SHA: [response and evidence-only difference]
+- Final submitted SHA if later than tested SHA: [The tested Stage 6 code SHA is 76e815c03416a03e7bb111d62b3fedca23782867. A later evidence-only commit will contain the completed Stage 6 record; its SHA cannot be written into this file before that commit exists.]
 
-- [ ] Three Stage 6 service targets completed and checked.
-- [ ] Original supplied tests retained and passing.
-- [ ] At least two focused issues link requirements and acceptance criteria.
-- [ ] Feature work reviewed by another member using the actual diff.
-- [ ] Human-first review and required Copilot comparison recorded.
-- [ ] Feedback resolved and approval recorded before merge.
+- [x] Three Stage 6 service targets completed and checked.
+- [x] Original supplied tests retained and passing.
+- [x] At least two focused issues link requirements and acceptance criteria.
+- [x] Feature work reviewed by another member using the actual diff.
+- [x] Human-first review and required Copilot comparison recorded.
+- [x] Feedback resolved and approval recorded before merge.
 - [ ] Everyone pulled main and integrated checks passed.
-- [ ] Required activities, quiz responses and contribution notes completed.
-- [ ] Only synthetic data included; confidential peer material kept out.
-- [ ] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
+- [x] Required activities, quiz responses and contribution notes completed.
+- [x] Only synthetic data included; confidential peer material kept out.
+- [x] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
 
 Do not write a file's own future commit SHA into that file. Record the tested code SHA first, then commit the evidence; explain the difference when submitting.
