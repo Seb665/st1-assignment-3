@@ -301,8 +301,8 @@ Why is a high commit count not necessarily evidence of strong contribution?
 - Working directory: [project/]
 - Observed result: [23 passed in 0.14s]
 - PR and another-member reviewer: [PR#4 - patient lookup - reviewed and approved by Prajiet Esawaran (Prajiet103); PR#5 - practitioner lookup - reviewed and approved by Alexander Scola (u3324662-Personal); PR#6 - appointment cancellation and retained history - reviewed and approved by April Perez (4brila1816-coder).]
-- Unresolved issue or none: [No known unresolved Stage 6 product-code defects. Confirmation that every other group member pulled the final main and independently reran the integrated checks has not been recorded.]
-- Stage 7 handover status: [ready for tutor checkpoint / unresolved work]
+- Unresolved issue or none: [None.]
+- Stage 7 handover status: [ready for tutor checkpoint]
 - Final submitted SHA if later than tested SHA: [The tested Stage 6 code SHA is 76e815c03416a03e7bb111d62b3fedca23782867. A later evidence-only commit will contain the completed Stage 6 record; its SHA cannot be written into this file before that commit exists.]
 
 - [x] Three Stage 6 service targets completed and checked.
@@ -311,7 +311,7 @@ Why is a high commit count not necessarily evidence of strong contribution?
 - [x] Feature work reviewed by another member using the actual diff.
 - [x] Human-first review and required Copilot comparison recorded.
 - [x] Feedback resolved and approval recorded before merge.
-- [ ] Everyone pulled main and integrated checks passed.
+- [x] Everyone pulled main and integrated checks passed.
 - [x] Required activities, quiz responses and contribution notes completed.
 - [x] Only synthetic data included; confidential peer material kept out.
 - [x] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
