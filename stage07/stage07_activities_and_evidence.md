@@ -278,17 +278,20 @@ Optional fixtures/parametrisation used and why, if any: [Not used. The tests use
 
 Use links rather than copying GitHub history. Continue the Stage 6 workflow; no commit/PR count, conflict or individual test quota is imposed.
 
-| Issue/task | Branch | PR | Reviewer | Key feedback | Outcome |
-|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| Issue/task                                               | Branch                   | PR                                                       | Reviewer                                | Key feedback                  | Outcome                                                                                        |
+|----------------------------------------------------------|--------------------------|----------------------------------------------------------|-----------------------------------------|-------------------------------|------------------------------------------------------------------------------------------------|
+| [#7 - Add Stage 7 domain and service verification tests] | [feature/stage7-testing] | [#8 - Add Stage 7 domain and service verification tests] | [Alexander Scola (u3324662 - Personal)] | ["Added the testing features"] | [Pull request approved by Alexander Scola. No corrective changes were requested before merge.] |
 
 ## M Contribution Evidence
 
 Record actual work in test design, implementation, review, traceability, diagnosis, necessary fixes and integration. Do not include confidential peer ratings.
 
-| Member | Actual contribution | Evidence link |
-|---|---|---|
-| [complete] | [complete] | [complete] |
+| Member             | Actual contribution                                                                                                                                                                                                                                                                                                                                   | Evidence link                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| [Sebastian Riches] | [Designed the Stage 7 TEST IDs and requirement traceability; implementedthe new domain and service tests; ran focused tests, changed-order independence checks and full regression testing; reviewed Copilot-generated candidates against the actual SmartCare requirements; updated the Stage 7 evidence record.]                                    | [Stage 7 branch commits, test files and Stage 7 evidence record.]                                    |
+| [Alexander Scola]  | [Drafted the Stage 7 formative-question responses and Activity 4 Copilot-test critique. The group reviewed these drafts against the Stage 7 handout and refined inaccurate or out-of-scope parts before finalising the shared responses.]                                                                                                             | [Group communication / submitted draft and final Stage 7 record.]                                    |
+| [Prajiet Esawaran] | [Completed the initial draft of Stage 7 Activity 1 by proposing positive and negative tests and key assertions for the required SmartCare behaviours. The group reviewed and refined the responses before finalising them in the shared Stage 7 record.]                                                                                              | [Stage 7 Activity 1 in the shared evidence record / group communication containing Prajiet's draft.] |
+| [April Perez]      | [Supported group coordination throughout Stage 7 by checking that members were progressing with their allocated tasks, reminding members about outstanding work, responding to questions and helping organise who was responsible for different parts of the stage. This helped keep the group on track with the Stage 7 requirements and deadlines.] | [Relevant group chat messages and communication showing coordination, reminders and check-ins.]      |
 
 ## N Formative Questions
 
@@ -324,9 +327,9 @@ Record actual work in test design, implementation, review, traceability, diagnos
 
 ## O Stage Completion
 
-Tested Stage 7 main SHA: [complete]
-Full-suite result: [complete]
-Unresolved defects and effect on baseline: [complete or none]
-Clean working tree and integration evidence: [complete]
-Stage 8 handover status: [complete; no Stage 8 work assigned]
-All tutorial/formative responses and traceability/Copilot decisions complete: [confirm]
+Tested Stage 7 main SHA: [2dfa56fbd1c4cc5309a6dc35a51ac300efc23ce8]
+Full-suite result: [python -m pytest from project/ -> 36 passed in 0.31s.]
+Unresolved defects and effect on baseline: [None identified. The integrated Stage 7 baseline passed all 36 accumulated tests.]
+Clean working tree and integration evidence: [PR#8 was approved by Alexander Scola and merged into main. Local main was updated with git pull, the full regression suite passed at SHA 2dfa56fbd1c4cc5309a6dc35a51ac300efc23ce8 and git status --short produced no output at the time of integrated verification.]
+Stage 8 handover status: [Ready for Stage 8 handover. No Stage 8 work has been started as part of Stage 7.]
+All tutorial/formative responses and traceability/Copilot decisions complete: [Yes.]
