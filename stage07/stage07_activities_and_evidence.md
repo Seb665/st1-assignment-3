@@ -357,9 +357,9 @@ Record actual work in test design, implementation, review, traceability, diagnos
 
 ## O Stage Completion
 
-Tested Stage 7 main SHA: [2dfa56fbd1c4cc5309a6dc35a51ac300efc23ce8]
-Full-suite result: [python -m pytest from project/ -> 36 passed in 0.31s.]
-Unresolved defects and effect on baseline: [None identified. The integrated Stage 7 baseline passed all 36 accumulated tests.]
-Clean working tree and integration evidence: [PR#8 was approved by Alexander Scola and merged into main. Local main was updated with git pull, the full regression suite passed at SHA 2dfa56fbd1c4cc5309a6dc35a51ac300efc23ce8 and git status --short produced no output at the time of integrated verification.]
-Stage 8 handover status: [Ready for Stage 8 handover. No Stage 8 work has been started as part of Stage 7.]
+Tested Stage 7 main SHA: [9071ab07b904e9518bf40d605fa741502631cd26]
+Full-suite result: [python -m pytest from project/ -> 40 passed in 0.20s.]
+Unresolved defects and effect on baseline: [None identified. The integrated Stage 7 baseline passed all 40 accumulated tests.]
+Clean working tree and integration evidence: [The follow-up Stage 7 domain coverage PR was reviewed and approved by Alexander Scola with the comment "Completed Stage 7 requirements", then merged into main. Local main was updated with git pull. The full regression suite passed at SHA 9071ab07b904e9518bf40d605fa741502631cd26 and git status --short produced no output after verification.]
+Stage 8 handover status: [Ready for Stage 8 handover. The Stage 7 application and expanded regression suite are integrated and verified. No Stage 8 work has been started as part of Stage 7.]
 All tutorial/formative responses and traceability/Copilot decisions complete: [Yes.]
