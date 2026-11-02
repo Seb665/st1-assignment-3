@@ -405,3 +405,37 @@ def test_cancelled_appointment_remains_retrievable():
     assert retrieved is appointment
     assert retrieved.status == AppointmentStatus.CANCELLED
     assert appointment in store.list_appointments()
+
+def test_cancelled_appointment_does_not_occupy_practitioner_slot():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+    practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    date_time = datetime(2026, 10, 1, 9, 0)
+
+    original = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    appointment_service.cancel_appointment("A1")
+
+    replacement = appointment_service.book_appointment(
+        "A2",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    assert original.status == AppointmentStatus.CANCELLED
+    assert store.find_appointment("A1") is original
+    assert store.find_appointment("A2") is replacement
+    assert replacement.status == AppointmentStatus.SCHEDULED
