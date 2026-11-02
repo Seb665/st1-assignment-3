@@ -226,3 +226,216 @@ def test_cancel_completed_appointment_raises_value_error_without_change() -> Non
 
     assert appointment.status is AppointmentStatus.COMPLETED
     assert service.find_appointment('A1') is appointment
+
+def test_register_patient_stores_registered_object():
+    store = SmartCareDataStore()
+    service = PatientService(store)
+
+    patient = service.register_patient("P1", "Test Patient")
+
+    assert store.find_patient("P1") is patient
+
+
+def test_duplicate_patient_id_is_rejected_without_overwrite():
+    store = SmartCareDataStore()
+    service = PatientService(store)
+
+    original = service.register_patient("P1", "Original Patient")
+
+    with pytest.raises(ValueError):
+        service.register_patient("P1", "Replacement Patient")
+
+    assert store.find_patient("P1") is original
+
+def test_valid_booking_uses_registered_objects_and_is_stored():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient = patient_service.register_patient("P1", "Test Patient")
+    practitioner = practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    appointment = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+
+    assert appointment.patient is patient
+    assert appointment.practitioner is practitioner
+    assert appointment.status == AppointmentStatus.SCHEDULED
+    assert store.find_appointment("A1") is appointment
+
+
+def test_booking_unknown_participant_is_rejected_without_storage():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+
+    with pytest.raises(LookupError):
+        appointment_service.book_appointment(
+            "A1",
+            "P1",
+            "DR999",
+            datetime(2026, 10, 1, 9, 0),
+        )
+
+    assert store.find_appointment("A1") is None
+
+def test_same_practitioner_exact_time_is_rejected():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+    practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    date_time = datetime(2026, 10, 1, 9, 0)
+
+    original = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    with pytest.raises(ValueError):
+        appointment_service.book_appointment(
+            "A2",
+            "P1",
+            "DR1",
+            date_time,
+        )
+
+    assert store.find_appointment("A1") is original
+    assert store.find_appointment("A2") is None
+
+
+def test_different_practitioner_same_time_is_allowed():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+
+    practitioner1 = practitioner_service.register_practitioner(
+        "DR1", "Dr One", "General"
+    )
+    practitioner2 = practitioner_service.register_practitioner(
+        "DR2", "Dr Two", "Cardiology"
+    )
+
+    date_time = datetime(2026, 10, 1, 9, 0)
+
+    appointment1 = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    appointment2 = appointment_service.book_appointment(
+        "A2",
+        "P1",
+        "DR2",
+        date_time,
+    )
+
+    assert store.find_appointment("A1") is appointment1
+    assert store.find_appointment("A2") is appointment2
+    assert appointment1.practitioner is practitioner1
+    assert appointment2.practitioner is practitioner2
+
+def test_cancel_scheduled_appointment_returns_same_cancelled_object():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+    practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    appointment = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+
+    result = appointment_service.cancel_appointment("A1")
+
+    assert result is appointment
+    assert appointment.status == AppointmentStatus.CANCELLED
+
+
+def test_cancelled_appointment_remains_retrievable():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+    practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    appointment = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+
+    appointment_service.cancel_appointment("A1")
+
+    retrieved = appointment_service.find_appointment("A1")
+
+    assert retrieved is appointment
+    assert retrieved.status == AppointmentStatus.CANCELLED
+    assert appointment in store.list_appointments()
+
+def test_cancelled_appointment_does_not_occupy_practitioner_slot():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient("P1", "Test Patient")
+    practitioner_service.register_practitioner(
+        "DR1", "Dr Test", "General"
+    )
+
+    date_time = datetime(2026, 10, 1, 9, 0)
+
+    original = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    appointment_service.cancel_appointment("A1")
+
+    replacement = appointment_service.book_appointment(
+        "A2",
+        "P1",
+        "DR1",
+        date_time,
+    )
+
+    assert original.status == AppointmentStatus.CANCELLED
+    assert store.find_appointment("A1") is original
+    assert store.find_appointment("A2") is replacement
+    assert replacement.status == AppointmentStatus.SCHEDULED
