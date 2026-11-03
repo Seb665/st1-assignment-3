@@ -146,8 +146,8 @@ Result — accepted, revised or rejected / reason / behaviour-preservation concl
 
 ## I. Git, human review and integration
 
-Issues for both defects / refactor scope and owners: [complete]
-Branch / prepared, repair and refactor checkpoints: [link B/C/D/H]
+Issues for both defects / refactor scope and owners: [Issue #11 - f8-01 Fix practitioner conflict detection; Issue #12 - F8-02 Restore cancelled appointment lookup; Issue #13 - Refactor practitioner conflict status comparison. All three issues were created by Sebastian Riches and correspond to the two diagnosed Stage 8 defects and the separate behaviour-preserving refactor.]
+Branch / prepared, repair and refactor checkpoints: [debug/stage08; prepared faulty-state commit 76a9a8d; F8-01 repair commit 58205cee0d2462f08fe830e287e639b50bfd10d1; F8-02 repair commit 5e5cc6ca596446f6183d04b2e1cff6a635acbce8; passing pre-refactor evidence commit a414958a63dade9048181b07a0afb8e2a0217208; refactor commit 4960649f8052aea3fdfdee5a88c515c36347ab79.]
 PR link and another member's reviewer identity: [complete]
 Key human feedback, difference from Copilot findings and response/outcome: [complete]
 Actual review approval / merge evidence: [complete]
