@@ -140,9 +140,9 @@ Smell and exact location: [Magic status string in SmartCareDataStore.has_practit
 Small proposed structural change / why justified: [Replace the magic string comparison with appointment.status is AppointmentStatus.SCHEDULED and import the existing AppointmentStatus enum into data_store.py. This removes duplicated knowledge of the enum's string value and makes the conflict rule clearer without changing its behaviour.]
 External behaviour to preserve / relevant tests: [Same-practitioner exact-time SCHEDULED bookings must still be rejected, different practitioners at the same time must remain allowed, cancelled appointments must not occupy the slot and all existing booking/cancellation/history behaviour must remain unchanged. Relevant protection includes the Stage 8 F8-01 regression test, Stage 7 conflict tests and the full accumulated suite.]
 Before result: see G, full passing suite. [Pre-refactor repaired baseline at SHA a414958a63dade9048181b07a0afb8e2a0217208; python -m pytest from project/ -> 42 passed in 0.26s. Stage 8 regression file -> 2 passed in 0.13s.]
-Actual change / diff / separate refactor SHA: [complete]
-Focused and full after-refactor commands / working directory / results / evidence: [complete]
-Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: [complete]
+Actual change / diff / separate refactor SHA: [Changed the practitioner conflict status check in SmartCareDataStore.has_practitioner_conflict() from the magic string comparison appointment.status.value == "scheduled" to the existing enum comparison appointment.status is AppointmentStatus.SCHEDULED. No other production behaviour was changed. Refactor SHA: 4960649f8052aea3fdfdee5a88c515c36347ab79.]
+Focused and full after-refactor commands / working directory / results / evidence: [python -m pytest "tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected" -v from project/ -> 1 passed in 0.13s. python -m pytest tests/test_regressions.py -v from project/ -> 2 passed in 0.16s. python -m pytest from project/ -> 42 passed in 0.31s.]
+Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: [Accepted. The refactor removes a magic status string and makes the intent of the practitioner-conflict rule clearer by using the existing AppointmentStatus enum. The focused regression test, both Stage 8 regression tests and the full accumulated suite all remained passing, providing evidence that required external behaviour was preserved.]
 
 ## I. Git, human review and integration
 
