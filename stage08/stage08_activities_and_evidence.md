@@ -75,7 +75,7 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 - Meaningful failing test path/name and exact relevant failure: [tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected failed because the second booking for the same practitioner at the exact same datetime did not raise the required ValueError (Failed: DID NOT RASE <class 'ValueError'>).]
 - Human hypothesis and intended checks: see E, F8-01.
 - Supported root cause and inspected code/runtime evidence: [Inspection of SmartCareDataStore.has_practitioner_conflict() confirmed that the practitioner comparison was reversed. The method used appointment.practitioner.practitioner_id != practitioner_id, causing appointments for different practitioners to be treated as conflicts while failing to detect and existing appointment for the same practitioner. This directly matches the observed failing tests.]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
+- Smallest justified fix / diff / why other behaviour is preserved: [Changed the practitioner comparison in SmartCareDataStore.has_pracitioner_conflict() from != practitioner_id to == practitioner_id. This restores the documented same-practitioner conflict rule while leaving the existing exact-datetime, SCHEDULED-status and excluded-appointment checks unchanged. No unrelated production behaviour was modified.]
 - Repair SHA / focused verification result: [complete]
 
 ## D. F8-02 diagnosis and repair
