@@ -56,98 +56,98 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 ## B. Stage 7 baseline and safe preparation
 
-- Stage 7 code SHA and requirement baseline: [complete]
-- Baseline test command / working directory / observed result / evidence: [complete]
-- Clean preparation SHA if a record-only commit followed Stage 7: [complete]
-- Branch and preparer / how teammates obtained this branch: [complete]
-- Downloaded tool version, source SHA256 and --check outcome: [complete]
-- --apply and --verify output summaries / artefact references: [complete]
-- Bounded diff inspected and recovery location (not committed): [complete]
-- Prepared faulty-state commit SHA: [complete]
-- Preparation or recovery issues and resolution, if any: [complete]
-- Initial prepared full-suite command / result / key failures: [complete]
+- Stage 7 code SHA and requirement baseline: [Stage 7 verified application baseline SHA 9071ab07b904e9518bf40d605fa741502631cd26; SmartCare A3 Requirements Baseline 2026 revision 2.]
+- Baseline test command / working directory / observed result / evidence: [python -m pytest from project/ -> 40 passed in 0.20s before Stage 8 preparation.]
+- Clean preparation SHA if a record-only commit followed Stage 7: [Stage 7 evidence-only main SHA 3e95e32. The Stage 8 preparation utility subsequently reported clean baseline Git SHA a43ee399be009eb70dfc25ffaa425cf790c1caae after Pranav's preparation setup.]
+- Branch and preparer / how teammates obtained this branch: [debug/stage08; prepared in Sebastian Riches' local repository with tutor support using the supplied Stage 8 preparation utility. The prepared branch was pushed as origin/debug/stage08. Teammate retrieval will be recorded when it occurs.]
+- Downloaded tool version, source SHA256 and --check outcome: [Stage 8 tool version 1.1. Baseline/source SHA256 reported by the utility: b4a1993e878c59a9df5e9055320702b2d318c5b6055bb1693a3afc25cd8fd375. python prepare_debugging.py project --check reported preflight PASS, baseline Git SHA a43ee399be009eb70dfc25ffaa425cf790c1caae, project unchanged and both proposed fault signatures verified in a temporary copy.]
+- --apply and --verify output summaries / artefact references: [python prepare_debugging.py project --apply reported preflight PASS and prepared F8-01 practitioner conflict and F8-02 retained-history lookup. The utility verified the expected failures test_f8_01_conflict and test_f8_02_history (2 failed). python prepare_debugging.py project --verify then reported exactly 2 expected failures with both approved symptom signatures present.]
+- Bounded diff inspected and recovery location (not committed): [The preparation utility reported backup/hash metadata in project/.stage8_faults/, with --restore reserved for setup recovery only. Inspection showed the controlled application change was bounded to project/smartcare/data_store.py. Local recovery metadata must not be committed.]
+- Prepared faulty-state commit SHA: [76a9a8d (Prepare debug stage 08). This commit contains the controlled Stage 8 changes to project/smartcare/data_store.py.]
+- Preparation or recovery issues and resolution, if any: [No preparation or recovery failure was observed. The Stage 8 utility reported successful --check, --apply and --verify results. No --restore recovery was required. A later commit, 3bca0d5, updated .gitignore but did not alter the prepared SmartCare fault code.]
+- Initial prepared full-suite command / result / key failures: [python -m pytest -q 33 passed, 7 failed in 0.58s.]
 
 ## C. F8-01 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
+- Symptom / observed behaviour: [A second appointment for the same practitioner at the exact same datetime was incorrectly allowed, while an appointment for a different practitioner at that same datetime was incorrectly rejected as a conflict.]
+- Expected behaviour and requirement: [Under FR-05 / AC-04.1, and existing SCHEDULED appointment for the same practitioner at the exact same datetime must cause a conflict. Under AC-04.2, a different practitioner at the same datetime must be allowed.]
+- Minimal synthetic reproduction steps: [Register a patient and two practitioners. Book A1 for practitioner DR1 at a fixed datetime. Attempt A2 for DR1 at that same datetime and observe that no ValueError is raised. Then attempt a booking for DR2 at the same datetime and observe that a conflict ValueError is incorrectly raised.]
+- Meaningful failing test path/name and exact relevant failure: [tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected failed because the second booking for the same practitioner at the exact same datetime did not raise the required ValueError (Failed: DID NOT RASE <class 'ValueError'>).]
 - Human hypothesis and intended checks: see E, F8-01.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
-- Repair SHA / focused verification result: [complete]
+- Supported root cause and inspected code/runtime evidence: [Inspection of SmartCareDataStore.has_practitioner_conflict() confirmed that the practitioner comparison was reversed. The method used appointment.practitioner.practitioner_id != practitioner_id, causing appointments for different practitioners to be treated as conflicts while failing to detect and existing appointment for the same practitioner. This directly matches the observed failing tests.]
+- Smallest justified fix / diff / why other behaviour is preserved: [Changed the practitioner comparison in SmartCareDataStore.has_pracitioner_conflict() from != practitioner_id to == practitioner_id. This restores the documented same-practitioner conflict rule while leaving the existing exact-datetime, SCHEDULED-status and excluded-appointment checks unchanged. No unrelated production behaviour was modified.]
+- Repair SHA / focused verification result: [58205cee0d2462f08fe830e287e639b50bfd10d1; python -m pytest "tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected" -v from project/ -> 1 passed in 0.11s.]
 
 ## D. F8-02 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
+- Symptom / observed behaviour: [After a SCHEDULED appointment is cancelled, the appointment object changes to CANCELLED but subsequent store lookup returns None and service lookup raises LookupError, making the retained appointment appear absent.]
+- Expected behaviour and requirement: [FR-06 requires a valid SCHEDULED cancellation to change the same appointment to CANCELLED. FR-07 / AC-05.2 require the cancelled appointment to remain retained and retrievable in the current session, with FR-08 supporting appointment lookup.]
+- Minimal synthetic reproduction steps: [Register a patient and practitioner, book appointment A1, cancel A1, confirm its status becomes CANCELLED, then call store.find_appointment("A1") and AppointmentService.find_appointment("A1"). The cancelled appointment should still be returned as the same stored object.]
+- Meaningful failing test path/name and exact relevant failure: [tests/test_regressions.py::test_f8_02_cancelled_appointment_remains_retrievable failed because store.find_appointment("A1") returned None instead of the same retained cancelled appointment object.]
 - Human hypothesis and intended checks: see E, F8-02.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
-- Repair SHA / focused verification result: [complete]
+- Supported root cause and inspected code/runtime evidence: [Inspection of SmartCareDataStore.find_appointment() confirmed that the modified method excludes appointments whose status value is "cancelled". The cancelled appointment remains in the store's appointment collection, but find_appointment() returns None for it. The service then interprets that None as absence and raises LookupError, which breaks retianed-history lookup.]
+- Smallest justified fix / diff / why other behaviour is preserved: [Removed the status-based exclusion from SmartCareDataStore.find_appointment() so that lookup is based on the validated appointment ID regardless of whether the stored appointment is SCHEDULED, CANCELLED or COMPLETED. This restores retained-history lookup without changing cancellation, booking, participant registration or other store behaviour.]
+- Repair SHA / focused verification result: [5e5cc6ca596446f6183d04b2e1cff6a635acbce8; python -m pytest "tests/test_regressions.py::test_f8_02_cancelled_appointment_remains_retrievable" -v from project/ -> 1 passed in 0.17s.]
 
 ## E. Human-first hypotheses
 
 Complete both entries BEFORE Copilot. C/D supply observed/expected/reproduction/test; retain those initial facts and link them here.
 
 ### F8-01 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+Likely cause and why plausible: [The practitioner comparison inside SmartCareDataStore.has_practitioner_conflict() may have been reversed or changed incorrectly. This is plausible because the observed behaviour is the opposite of the required rule: same-practitioner bookings are allowed while different-practitioner bookings are treated as conflicts.]
+Evidence intended to inspect / competing explanation / discriminating check: [Inspect has_practitioner_conflict() and compare its practitioner-ID, datetime and SCHEDULED-status conditions. A competing explanation is that AppointmentService.book_appointment() may be passing the wrong practitioner ID. The discriminating check is to inspect the actual arguments passed by the service and then evaluate the store method for the same practitioner and for a different practitioner at the same datetime.]
+Member and saved sequence/time or commit showing this preceded consultation: [Sebastian Riches. The human hypothesis and failing F8-01 regression test were recorded and committed before any GitHub Copilot consultation at commit 6e4a18e0fb4eac929ad7924cb49189dfb80d0c79.]
 
 ### F8-02 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+Likely cause and why plausible: [SmartCareDataStore.find_appointment() appears to exclude appointments whose status is CANCELLED, causing a retained cancelled appointment to be treated as absent during lookup.]
+Evidence intended to inspect / competing explanation / discriminating check: [Inspect find_appointment() and compare list_appointments() membership with direct store lookup after cancellation. A competing explanation is that cancellation deletes the appointment. The discriminating check is to confirm that the cancelled object remains in list_appointments() while find_appointment("A1") returns None.]
+Member and saved sequence/time or commit showing this preceded consultation: [Sebastian Riches. The human hypothesis and failing F8-02 regression test were recorded and committed before any GitHub Copilot consultation at commit 6e4a18e0fb4eac929ad7924cb49189dfb80d0c79.]
 
 ## F. GitHub Copilot prompts, findings and human decisions
 
 Use the full handout prompt separately for BOTH defects, after E. Keep each actual prompt or accessible reference; include observed behaviour, expected behaviour, reproduction, failing test, human hypothesis, relevant code, three ranked causes and discriminating checks, with the no-rewrite/no-invented-requirements constraints.
 
 ### F8-01 Copilot review
-Actual prompt / output reference and member: [complete]
-1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-Final human conclusion and comparison with initial hypothesis: [complete]
+Actual prompt / output reference and member: [Sebastian Riches used the required Stage 8 diagnostic prompt in a fresh GitHub Copilot chat after the human-first hypothesis had already been recorded at pre-Copilot commit 02c2138e84774432fb7cbaaa644d3b5a29360004. Copilot returned three ranked diagnostic suggestions.]
+1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot ranked the reversed practitioner comparison as the most likely cause and recommended checking whether has_practitioner_conflict() uses != rather than ==. Inspection of the actual debug/stage08 code confirmed appointment.practitioner.practitioner_id != practitioner_id. This exactly explains why same-practitioner conflicts are missed and different practitioners are incorrectly blocked. Classification: Correct. Decision: Accept.]
+2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot suggested that pytest might be loading a stale or different copy of the SmartCare package. The actual test run was performed from the intended repository and project/ working directory on debug/stage08 and the inspected data_store.py on that branch contains the reversed comparison that matches the failure. The different from main is intentional because Stage 8 uses a prepared debugging branch. Classification: Plausible diagnostic check but contradicted by the available evidence. Decision: Reject as the root cause.]
+3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot suggested that the booking path might pass an unexpected practitioner ID or use a different datastore instance. The regression test creates one shared SmartCareDataStore, passes it to the services and uses the correct registered practitioner IDs. The failure is already directly explained by the reversed comparison inside has_practitioner_conflict(). Classification: Plausible alternative but not supported by the observed evidence. Decision: Reject as the root cause.]
+Final human conclusion and comparison with initial hypothesis: [The final diagnosis confirms the original human hypothesis. F8-01 is caused by the reversed practitioner-ID comparison in SmartCareDataStore.has_practitioner_conflict(): != is used where the conflict rule requires matching the same practitioner. Copilot's first suggestion agreed with the diagnosis, while its stale-import and wrong-ID/store alternatives were not supported by the actual branch, test setup or inspected code.]
 
 ### F8-02 Copilot review
-Actual prompt / output reference and member: [complete]
-1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-Final human conclusion and comparison with initial hypothesis: [complete]
+Actual prompt / output reference and member: [Sebastian Riches used the required Stage 8 diagnostic prompt in a fresh GitHub Copilot chat after the human-first hypothesis had already been recorded at pre-Copilot commit 02c2138e84774432fb7cbaaa644d3b5a29360004. Copilot returned three ranked diagnostic suggestions.]
+1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot ranked the explicit exclusion of cancelled appointments in SmartCareDataStore.find_appointment() as the most likely cause. Inspection of the running debug/stage08 code confirmed the condition appointment.status.value != "cancelled". The regression test also showed that the appointment had changed to CANCELLED while store.find_appointment("A1") returned None. Classification: Correct. Decision: Accept.]
+2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot suggested that cancellation or list_appointments() might remove or filter the appointment. The observed evidence contradicts this as the root cause because the appointment remains retained in the store collection; the failure occurs specifically when find_appointment() applies its status condition. Classification: Plausible diagnostic alternative but not supported by the evidence. Decision: Reject as the root cause.]
+3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Copilot suggested that the stored appointment ID might no longer match "A1". The appointment was created and retained with ID "A1" and the failure appeared only after cancellation. The inspected find_appointment() status filter directly explains the failed lookup, while no evidence showed the ID changing. Classification: Plausible alternative but not supported by the observed evidence. Decision: Reject as the root cause.]
+Final human conclusion and comparison with initial hypothesis: [The final diagnosis confirms the original human hypothesis. F8-02 is caused by SmartCareDataStore.find_appointment() excluding appointments whose status is CANCELLED. The cancelled appointment remains stored but the lookup method returns None, which then causes the service layer to raise LookupError. Copilot's first suggestion agreed with the supported diagnosis, while the removal/filtering and ID-mismatch alternatives were contradicted by the inspected state and code.]
 
 ## G. Failing to passing regression evidence
 
-| Checkpoint | Code SHA or precise diff | Command and working directory | Actual result and artefact reference |
-|---|---|---|---|
-| F8-01 before repair | [complete] | [complete] | [complete] |
-| F8-01 after repair | [complete] | [complete] | [complete] |
-| F8-02 before repair | [complete] | [complete] | [complete] |
-| F8-02 after repair | [complete] | [complete] | [complete] |
-| Full suite after both repairs, before refactor | [complete] | [complete] | [complete] |
+| Checkpoint | Code SHA or precise diff | Command and working directory                                                                                         | Actual result and artefact reference                                                                                                                                                    |
+|---|----|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| F8-01 before repair | [6e4a18e0fb4eac929ad7924cb49189dfb80d0c79] | [python -m pytest tests/test_regressions.py -v from project/]                                                         | [test_f8_01_same_practitioner_exact_time_conflict_is_rejected FAILED because the expected ValueError was not raised. Focused run: 2 failed in 0.34s.]                                   |
+| F8-01 after repair | [58205cee0d2462f08fe830e287e639b50bfd10d1] | [python -m pytest "tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected" -v from project/] | [Passed - 1 passed in 0.11s. The same-practitioner exact-time conflict is now correctly rejected.]                                                                                      |
+| F8-02 before repair | [6e4a18e0fb4eac929ad7924cb49189dfb80d0c79] | [python -m pytest tests/test_regressions.py -v from project/]                                                         | [test_f8_02_cancelled_appointment_remains_retrievable FAILED because store.find_appointment("A1") returned None instead of the retained cancelled appointment. Focused run: 2 failed in 0.34s.] |
+| F8-02 after repair | [[5e5cc6ca596446f6183d04b2e1cff6a635acbce8] | [python -m pytest "tests/test_regressions.py::test_f8_02_cancelled_appointment_remains_retrievable" -v from project/] | [Passed - 1 passed in 0.17s. The same cancelled appointment is now retained and retrievable by both store and service lookup.]                                                          |
+| Full suite after both repairs, before refactor | [5e5cc6ca596446f6183d04b2e1cff6a635acbce8] | [python -m pytest from project/]                                                                                                                    | [Passed - 42 passed in 0.26s. Both Stage 8 regression tests also passed together: 2 passed in 0.13s.]                                                                                                                                                                                      |
 
-Explain how the assertions detect each relevant incorrect result and protect previous behaviour: [complete]
-Unrelated failures investigated / resolution: [complete or not applicable with reason]
+Explain how the assertions detect each relevant incorrect result and protect previous behaviour: [The F8-01 regression test requires the second same-practitioner, exact-time booking to raise ValueError and also checks that the original appointment remains stored while the rejected appointment is absent. This detects the reversed practitioner-conflict comparison and protects existing stored state. The F8-02 regression test checks that cancellation returns the same appointment object, changes its status to CANCELLED, keeps it retrievable through both store and service lookup, retains it in current-session history, and continues to reject repeated cancellation with ValueError. These assertions would fail if cancelled history were hidden, replaced or deleted.]
+Unrelated failures investigated / resolution: [No unrelated failures remained after the two supported repairs. The complete accumulated suite passed with 42 tests, so no additional product or test defect was identified before refactoring.]
 
 ## H. Refactoring decision and before/after verification
 
-Smell and exact location: [complete]
-Small proposed structural change / why justified: [complete before editing]
-External behaviour to preserve / relevant tests: [complete]
-Before result: see G, full passing suite.
-Actual change / diff / separate refactor SHA: [complete]
-Focused and full after-refactor commands / working directory / results / evidence: [complete]
-Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: [complete]
+Smell and exact location: [Magic status string in SmartCareDataStore.has_practitioner_conflict() in project/smartcare/data_store.py, where the method compares appointment.status.value == "scheduled" instead of using the existing AppointmentStatus.enum.]
+Small proposed structural change / why justified: [Replace the magic string comparison with appointment.status is AppointmentStatus.SCHEDULED and import the existing AppointmentStatus enum into data_store.py. This removes duplicated knowledge of the enum's string value and makes the conflict rule clearer without changing its behaviour.]
+External behaviour to preserve / relevant tests: [Same-practitioner exact-time SCHEDULED bookings must still be rejected, different practitioners at the same time must remain allowed, cancelled appointments must not occupy the slot and all existing booking/cancellation/history behaviour must remain unchanged. Relevant protection includes the Stage 8 F8-01 regression test, Stage 7 conflict tests and the full accumulated suite.]
+Before result: see G, full passing suite. [Pre-refactor repaired baseline at SHA a414958a63dade9048181b07a0afb8e2a0217208; python -m pytest from project/ -> 42 passed in 0.26s. Stage 8 regression file -> 2 passed in 0.13s.]
+Actual change / diff / separate refactor SHA: [Changed the practitioner conflict status check in SmartCareDataStore.has_practitioner_conflict() from the magic string comparison appointment.status.value == "scheduled" to the existing enum comparison appointment.status is AppointmentStatus.SCHEDULED. No other production behaviour was changed. Refactor SHA: 4960649f8052aea3fdfdee5a88c515c36347ab79.]
+Focused and full after-refactor commands / working directory / results / evidence: [python -m pytest "tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected" -v from project/ -> 1 passed in 0.13s. python -m pytest tests/test_regressions.py -v from project/ -> 2 passed in 0.16s. python -m pytest from project/ -> 42 passed in 0.31s.]
+Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: [Accepted. The refactor removes a magic status string and makes the intent of the practitioner-conflict rule clearer by using the existing AppointmentStatus enum. The focused regression test, both Stage 8 regression tests and the full accumulated suite all remained passing, providing evidence that required external behaviour was preserved.]
 
 ## I. Git, human review and integration
 
-Issues for both defects / refactor scope and owners: [complete]
-Branch / prepared, repair and refactor checkpoints: [link B/C/D/H]
+Issues for both defects / refactor scope and owners: [Issue #11 - f8-01 Fix practitioner conflict detection; Issue #12 - F8-02 Restore cancelled appointment lookup; Issue #13 - Refactor practitioner conflict status comparison. All three issues were created by Sebastian Riches and correspond to the two diagnosed Stage 8 defects and the separate behaviour-preserving refactor.]
+Branch / prepared, repair and refactor checkpoints: [debug/stage08; prepared faulty-state commit 76a9a8d; F8-01 repair commit 58205cee0d2462f08fe830e287e639b50bfd10d1; F8-02 repair commit 5e5cc6ca596446f6183d04b2e1cff6a635acbce8; passing pre-refactor evidence commit a414958a63dade9048181b07a0afb8e2a0217208; refactor commit 4960649f8052aea3fdfdee5a88c515c36347ab79.]
 PR link and another member's reviewer identity: [complete]
 Key human feedback, difference from Copilot findings and response/outcome: [complete]
 Actual review approval / merge evidence: [complete]
