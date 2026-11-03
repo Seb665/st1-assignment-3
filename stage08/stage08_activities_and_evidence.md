@@ -72,9 +72,9 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 - Symptom / observed behaviour: [A second appointment for the same practitioner at the exact same datetime was incorrectly allowed, while an appointment for a different practitioner at that same datetime was incorrectly rejected as a conflict.]
 - Expected behaviour and requirement: [Under FR-05 / AC-04.1, and existing SCHEDULED appointment for the same practitioner at the exact same datetime must cause a conflict. Under AC-04.2, a different practitioner at the same datetime must be allowed.]
 - Minimal synthetic reproduction steps: [Register a patient and two practitioners. Book A1 for practitioner DR1 at a fixed datetime. Attempt A2 for DR1 at that same datetime and observe that no ValueError is raised. Then attempt a booking for DR2 at the same datetime and observe that a conflict ValueError is incorrectly raised.]
-- Meaningful failing test path/name and exact relevant failure: [tests/test_services.py::test_same_practitioner_exact_time_is_rejected failed because ValueError was not raised. tests/test_services.py::test_different_practitioner_same_time_is_allowed failed because ValueError was raised for the different practitioner.]
+- Meaningful failing test path/name and exact relevant failure: [tests/test_regressions.py::test_f8_01_same_practitioner_exact_time_conflict_is_rejected failed because the second booking for the same practitioner at the exact same datetime did not raise the required ValueError (Failed: DID NOT RASE <class 'ValueError'>).]
 - Human hypothesis and intended checks: see E, F8-01.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
+- Supported root cause and inspected code/runtime evidence: [Inspection of SmartCareDataStore.has_practitioner_conflict() confirmed that the practitioner comparison was reversed. The method used appointment.practitioner.practitioner_id != practitioner_id, causing appointments for different practitioners to be treated as conflicts while failing to detect and existing appointment for the same practitioner. This directly matches the observed failing tests.]
 - Smallest justified fix / diff / why other behaviour is preserved: [complete]
 - Repair SHA / focused verification result: [complete]
 
@@ -83,9 +83,9 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 - Symptom / observed behaviour: [After a SCHEDULED appointment is cancelled, the appointment object changes to CANCELLED but subsequent store lookup returns None and service lookup raises LookupError, making the retained appointment appear absent.]
 - Expected behaviour and requirement: [FR-06 requires a valid SCHEDULED cancellation to change the same appointment to CANCELLED. FR-07 / AC-05.2 require the cancelled appointment to remain retained and retrievable in the current session, with FR-08 supporting appointment lookup.]
 - Minimal synthetic reproduction steps: [Register a patient and practitioner, book appointment A1, cancel A1, confirm its status becomes CANCELLED, then call store.find_appointment("A1") and AppointmentService.find_appointment("A1"). The cancelled appointment should still be returned as the same stored object.]
-- Meaningful failing test path/name and exact relevant failure: [tests/test_services.py::test_cancelled_appointment_remains_retrievable failed because AppointmentService.find_appointment("A1") raised LookupError. tests/test_services.py::test_cancelled_appointment_does_not_occupy_practitioner_slot also showed store.find_appointment("A1") returning None instead of the retained cancelled appointment.]
+- Meaningful failing test path/name and exact relevant failure: [tests/test_regressions.py::test_f8_02_cancelled_appointment_remains_retrievable failed because store.find_appointment("A1") returned None instead of the same retained cancelled appointment object.]
 - Human hypothesis and intended checks: see E, F8-02.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
+- Supported root cause and inspected code/runtime evidence: [Inspection of SmartCareDataStore.find_appointment() confirmed that the modified method excludes appointments whose status value is "cancelled". The cancelled appointment remains in the store's appointment collection, but find_appointment() returns None for it. The service then interprets that None as absence and raises LookupError, which breaks retianed-history lookup.]
 - Smallest justified fix / diff / why other behaviour is preserved: [complete]
 - Repair SHA / focused verification result: [complete]
 
@@ -123,13 +123,13 @@ Final human conclusion and comparison with initial hypothesis: [complete]
 
 ## G. Failing to passing regression evidence
 
-| Checkpoint | Code SHA or precise diff | Command and working directory | Actual result and artefact reference |
-|---|---|---|---|
-| F8-01 before repair | [complete] | [complete] | [complete] |
-| F8-01 after repair | [complete] | [complete] | [complete] |
-| F8-02 before repair | [complete] | [complete] | [complete] |
-| F8-02 after repair | [complete] | [complete] | [complete] |
-| Full suite after both repairs, before refactor | [complete] | [complete] | [complete] |
+| Checkpoint | Code SHA or precise diff                                                                                                  | Command and working directory                                 | Actual result and artefact reference                                                                                                                                                            |
+|---|---------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| F8-01 before repair | [Prepared faulty debug/stage08 state with newly added regression test; exact SHA to be recorded after checkpoint commit.] | [python -m pytest tests/test_regressions.py -v from project/] | [test_f8_01_same_practitioner_exact_time_conflict_is_rejected FAILED because the expected ValueError was not raised. Focused run: 2 failed in 0.34s.]                                           |
+| F8-01 after repair | [complete]                                                                                                                | [complete]                                                    | [complete]                                                                                                                                                                                      |
+| F8-02 before repair | [Prepared faulty debug/stage08 state with newly added regression test; exact SHA to be recorded after checkpoint commit.] | [python -m pytest tests/test_regressions.py -v from project/] | [test_f8_02_cancelled_appointment_remains_retrievable FAILED because store.find_appointment("A1") returned None instead of the retained cancelled appointment. Focused run: 2 failed in 0.34s.] |
+| F8-02 after repair | [complete]                                                                                                                | [complete]                                                    | [complete]                                                                                                                                                                                      |
+| Full suite after both repairs, before refactor | [complete]                                                                                                                | [complete]                                                    | [complete]                                                                                                                                                                                      |
 
 Explain how the assertions detect each relevant incorrect result and protect previous behaviour: [complete]
 Unrelated failures investigated / resolution: [complete or not applicable with reason]
