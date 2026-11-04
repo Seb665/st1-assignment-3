@@ -439,3 +439,178 @@ def test_cancelled_appointment_does_not_occupy_practitioner_slot():
     assert store.find_appointment("A1") is original
     assert store.find_appointment("A2") is replacement
     assert replacement.status == AppointmentStatus.SCHEDULED
+
+
+def test_list_practitioner_appointments_returns_all_statuses_by_default():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient(
+        "P1",
+        "Test Patient",
+    )
+    practitioner_service.register_practitioner(
+        "DR1",
+        "Dr Test",
+        "General",
+    )
+
+    first = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+    second = appointment_service.book_appointment(
+        "A2",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 10, 0),
+    )
+
+    appointment_service.cancel_appointment("A1")
+
+    result = appointment_service.list_practitioner_appointments(
+        "DR1",
+    )
+
+    assert result == [first, second]
+    assert result[0] is first
+    assert result[1] is second
+    assert first.status is AppointmentStatus.CANCELLED
+    assert second.status is AppointmentStatus.SCHEDULED
+
+
+def test_list_practitioner_appointments_filters_by_status():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient(
+        "P1",
+        "Test Patient",
+    )
+    practitioner_service.register_practitioner(
+        "DR1",
+        "Dr Test",
+        "General",
+    )
+
+    cancelled = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+    scheduled = appointment_service.book_appointment(
+        "A2",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 10, 0),
+    )
+
+    appointment_service.cancel_appointment("A1")
+
+    result = appointment_service.list_practitioner_appointments(
+        "DR1",
+        AppointmentStatus.SCHEDULED,
+    )
+
+    assert result == [scheduled]
+    assert result[0] is scheduled
+    assert cancelled not in result
+
+
+def test_list_practitioner_appointments_known_empty_returns_new_empty_list():
+    store = SmartCareDataStore()
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    practitioner_service.register_practitioner(
+        "DR1",
+        "Dr Test",
+        "General",
+    )
+
+    first_result = appointment_service.list_practitioner_appointments(
+        "DR1",
+    )
+    second_result = appointment_service.list_practitioner_appointments(
+        "DR1",
+    )
+
+    assert first_result == []
+    assert second_result == []
+    assert first_result is not second_result
+
+
+def test_list_practitioner_appointments_unknown_practitioner_raises_lookup_error():
+    store = SmartCareDataStore()
+    appointment_service = AppointmentService(store)
+
+    with pytest.raises(LookupError):
+        appointment_service.list_practitioner_appointments(
+            "DR999",
+        )
+
+
+def test_list_practitioner_appointments_blank_id_raises_value_error():
+    store = SmartCareDataStore()
+    appointment_service = AppointmentService(store)
+
+    with pytest.raises(ValueError):
+        appointment_service.list_practitioner_appointments(
+            "   ",
+        )
+
+
+def test_list_practitioner_appointments_invalid_status_raises_value_error():
+    store = SmartCareDataStore()
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    practitioner_service.register_practitioner(
+        "DR1",
+        "Dr Test",
+        "General",
+    )
+
+    with pytest.raises(ValueError):
+        appointment_service.list_practitioner_appointments(
+            "DR1",
+            "scheduled",
+        )
+
+
+def test_list_practitioner_appointments_accepts_trimmed_registered_id():
+    store = SmartCareDataStore()
+    patient_service = PatientService(store)
+    practitioner_service = PractitionerService(store)
+    appointment_service = AppointmentService(store)
+
+    patient_service.register_patient(
+        "P1",
+        "Test Patient",
+    )
+    practitioner_service.register_practitioner(
+        "DR1",
+        "Dr Test",
+        "General",
+    )
+
+    appointment = appointment_service.book_appointment(
+        "A1",
+        "P1",
+        "DR1",
+        datetime(2026, 10, 1, 9, 0),
+    )
+
+    result = appointment_service.list_practitioner_appointments(
+        "  DR1  ",
+    )
+
+    assert result == [appointment]
+    assert result[0] is appointment
