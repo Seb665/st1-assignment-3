@@ -1,4 +1,4 @@
-"""Checks of supplied foundation only; assessed TODOs are not called."""
+"""Checks of supplied foundation only; assessed features are covered elsewhere."""
 
 from datetime import datetime
 
