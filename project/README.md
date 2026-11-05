@@ -25,9 +25,10 @@ From the project directory, run the interactive menu with: python main.py --inte
 
 Run the full automated test suite with: python -m pytest
 
-Stage 9 query and workflow tests can also be run separately: Stage 9 query and workflow tests can also be run separately:
+Stage 9 query and workflow tests can also be run separately:
 
-python -m pytest tests/test_queries.py -v, python -m pytest tests/test_workflows.py -v
+python -m pytest tests/test_queries.py -v
+python -m pytest tests/test_workflows.py -v
 
 queries.py contains the pure Stage 9 collection-processing functions. appointment_sort_key() orders appointments by date_time and then appointment_id. select_appointments() filters appointments by practitioner and optional AppointmentStatus, returning a new sorted list without modifying the source collection.
 
@@ -51,7 +52,7 @@ The interactive console supports:
 
 8. List practitioner appointments
 
-9. Exit
+0. Exit
 
 For practitioner appointment listings, leaving the status blank includes all statuses. Valid explicit status values are scheduled, cancelled and completed.
 
@@ -60,3 +61,21 @@ Expected ValueError and LookupError cases are displayed without terminating the 
 Cancelled appointments remain available in the current-session history but no longer occupy their practitioner/date-time slot.
 
 SmartCare remains session-only. Data is lost when the program exits. Stage 9 does not add persistence, rescheduling or assurance functionality.
+
+## Release information
+
+The common UG SmartCare release is being verified through Stage 12.
+
+Stage 12 starting repository SHA:
+
+d523b8d5e812cddaf2bc23198cad81653d32cd05
+
+The last integrated Stage 9 application SHA was:
+
+68fb7828983323978dff21850b08143424974090
+
+At the Stage 12 starting SHA, the complete automated test suite passed:
+
+57 passed in 0.33s
+
+The final tested/submitted release SHA will be recorded after Stage 12 release verification is complete.

@@ -1,17 +1,19 @@
 # Software Technology 1 Assignment 3
 
 One group repository and one evolving SmartCare application.
-Baseline: Stage 6 foundation, 2026 revision 2. This starter deliberately leaves the three Stage 6 service tasks incomplete.
+Baseline: SmartCare Assignment 3 2026 revision 2. The common UG functionality through Stage 9 has been completed and Stage 12 release verification is in progress.
 
 ## Group index
 
-- Group and tutorial: [complete]
-- Member names, GitHub usernames and UG/PG cohorts: [complete]
-- Shared repository URL: [complete]
-- Latest completed stage: [complete]
-- Verified code SHA: [complete]
-- Test command, working directory and observed result: [complete]
-- Final submitted SHA, if different from tested code SHA: [complete; explain evidence-only changes]
+- Group and tutorial: [Group 3, Thursday 2:30-4:30]
+- Member names, GitHub usernames and UG/PG cohorts: [Sebastian Riches (Seb665) UG; Alexander Scola (u3324662-personal) UG; Abril Perez (4brila1816-coder) UG; Prajiet Eswaran (Prajiet103) UG]
+- Shared repository URL: [https://github.com/Seb665/st1-assignment-3]
+- Latest completed stage: [Stage 9; Stage 12 release verification in progress]
+- Verified code SHA: [68fb7828983323978dff21850b08143424974090]
+- Stage 12 starting SHA: [d523b8d5e812cddaf2bc23198cad81653d32cd05]
+- Test command, working directory and observed result: [from project/, run python -m pytest]
+- Stage 12 starting regression result:[57 passed in 0.33s]
+- Final submitted SHA, if different from tested code SHA: [pending final Stage 12 release verification]
 
 Do not put student IDs, private peer ratings, credentials or personal contact details here.
 
