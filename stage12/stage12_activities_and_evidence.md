@@ -102,23 +102,25 @@ Available AI evidence and missing evidence honestly disclosed: [The recorded Sta
 
 | README item | Location | Verifier | Result/gap |
 |---|---|---|---|
-| Purpose and included common/PG scope | Root README.md and project/README.md | Sebastian Riches | The READMEs identify SmartCare as the common UG application, describe the completed common functionality through Stage 9 and state that the group is UG-only. PG Stage 10/11 rescheduling and assurance functionality is not included. |
-| Out-of-scope capabilities and known limitations | project/README.md | Sebastian Riches | The README documents that SmartCare is session-only, data is lost on exit, FR-10 persistence is retired and rescheduling/assurance are not implemented. It also records that no age, duration, patient-conflict or past-date rules apply. |
+| README item | Location | Verifier | Result/gap |
+|---|---|---|---|
+| Purpose and included common/PG scope | Root README.md and project/README.md | Sebastian Riches | The READMEs identify SmartCare as the common UG application, describe the completed common functionality through Stage 9 and the Stage 12 release candidate, and state that the group is UG-only. PG Stage 10/11 rescheduling and assurance functionality is not included. |
+| Out-of-scope capabilities and known limitations | project/README.md | Sebastian Riches | The README documents that SmartCare is session-only, data is lost on exit, FR-10 persistence is retired and PG rescheduling/assurance are not implemented. It also records that no age, duration, patient-conflict or past-date rules apply. |
 | Confirmed teaching Python version and dependency installation | Root README.md, project/README.md, project/requirements-dev.txt | Sebastian Riches | Python 3.13.14 was used during Stage 12 verification. requirements-dev.txt contains only pytest==8.3.5. Runtime application code uses only the Python standard library. |
-| Working directory / demo / interactive / test commands | project/README.md | Sebastian Riches | Verified from project/. python main.py ran successfully and printed A1: P1 with DR1, 2026-10-01 09:00, scheduled followed by the session-only warning. python main.py --interactive opened successfully and exited normally using choice 0. python -m pytest completed successfully with **57 passed in 0.38s**. |
-| Repository structure and architecture responsibilities | Root README.md, project/README.md, project/smartcare/ | Sebastian Riches | The repository keeps one evolving project/ plus stage evidence folders. The project README describes domain, data-store, service, query and console responsibilities. No architecture/documentation gap was identified in the current working copy. |
+| Working directory / demo / interactive / test commands | project/README.md | Sebastian Riches | Verified from project/. python main.py ran successfully and displayed the synthetic booking demonstration and session-only warning. python main.py --interactive opened successfully and exited normally using choice 0. python -m pytest completed successfully with 57 passed in 0.38s during the README reproducibility check. |
+| Repository structure and architecture responsibilities | Root README.md, project/README.md, project/smartcare/ | Sebastian Riches | The repository keeps one evolving project/ plus stage evidence folders. The project README describes domain, data-store, service, query and console responsibilities. No architecture/documentation gap was identified. |
 | Responsible AI summary / synthetic-data rule | Root README.md, project/README.md, stage09/copilot_review.md | Sebastian Riches | The documentation states that significant Copilot output must be human-verified and that only synthetic data is to be used. Stage 9 preserves the actual Copilot review and human evaluation. |
-| Release label/version and SHA links | Root README.md and project/README.md | Sebastian Riches | The READMEs record SmartCare Assignment 3 2026 revision 2, Stage 12 release verification, integrated Stage 9 application SHA 68fb7828983323978dff21850b08143424974090 and Stage 12 starting SHA d523b8d5e812cddaf2bc23198cad81653d32cd05. Final tested/submitted release SHA remains pending. |
-| Root README index and project/README.md verified | Root README.md and project/README.md | Sebastian Riches | Yes. Sebastian Riches reviewed and followed both READMEs in the current working copy. Independent verifier confirmation is still pending. |
-| Fresh clone or extracted ZIP / candidate identity | Final source ZIP / fresh copy | Pending independent verifier | Pending. A fresh-clone or extracted final source-ZIP reproducibility check has not yet been completed. |
-| Verifier and clean environment / actual version | Existing project virtual environment | Sebastian Riches | Verification was performed using the existing project virtual environment with Python 3.13.14. This was not an independent clean-environment verification, so a second verifier/final extracted-package check remains required. |
-| Setup/run/test commands and observed results | project/ | Sebastian Riches | python main.py ran successfully and displayed the synthetic appointment demonstration and session-only warning. python main.py --interactive opened and exited normally using option 0. python -m pytest reported **57 passed in 0.38s**. |
-| Missing local file or setup gap / remedy and recheck | Root and project READMEs / current working copy | Sebastian Riches | No missing file or setup problem was observed in the current working copy. Earlier README issues were corrected, including stale release information, duplicated focused-test wording and the incorrect menu exit number. Final independent fresh-package verification remains to be completed before release. |
-Root README index and project/README verified: [Verified by Sebastian Riches using the documented commands. Independent second-verifier confirmation remains pending.]
-Fresh clone or extracted ZIP / candidate identity: [Pending final extracted source-ZIP verification.]
-Verifier and clean environment / actual version: [Current verification used the existing project environment with Python 3.13.14. Independent fresh-package verification remains pending.]
-Setup/run/test commands and observed results: [python main.py ran successfully; python main.py --interactive opened and exited normally using option 0; python -m pytest reported 57 passed in 0.38s during the README reproducibility check.]
-Missing local file or setup gap / remedy and recheck: [No missing local file or setup problem was identified. Earlier README issues were corrected. Final extracted-package verification remains pending.]
+| Release label/version and SHA links | Root README.md and project/README.md | Sebastian Riches | The READMEs record SmartCare Assignment 3 2026 revision 2, integrated Stage 9 application SHA 68fb7828983323978dff21850b08143424974090, Stage 12 starting SHA d523b8d5e812cddaf2bc23198cad81653d32cd05, and final tested Stage 12 candidate SHA 7b99097f88cf671f6afbfd6dc715f2132cf83565, which passed 57 tests in 0.30s. Evidence/package commit f2794c1734252868c509f6c63deedc85761ac1a1 was subsequently used to create the verified release ZIP. The final submitted SHA will be recorded after the final evidence update. |
+| Root README index and project/README.md verified | Root README.md and project/README.md | Sebastian Riches and Alexander Scola | Sebastian reviewed and followed the README instructions during release preparation. Alexander Scola then independently reproduced the release from an extracted source ZIP and successfully followed the documented run/test workflow. |
+| Fresh clone or extracted ZIP / candidate identity | SmartCare-release.zip / separate extracted copy | Alexander Scola | Alexander independently verified an extracted copy of SmartCare-release.zip, generated from commit f2794c1734252868c509f6c63deedc85761ac1a1. The extracted copy was separate from the working repository. |
+| Verifier and clean environment / actual version | Separate extracted release directory using the available approved Python environment | Alexander Scola | Alexander Scola performed the independent extracted-package check using Python 3.13.14. The source was run from a separate extracted release directory. The existing approved Python virtual environment was used; no untracked source files from the working repository were required. |
+| Setup/run/test commands and observed results | Extracted SmartCare-release.zip / project/ | Alexander Scola | The application workflow ran successfully from the extracted package and python -m pytest reported **57 passed in 0.69s**. |
+| Missing local file or setup gap / remedy and recheck | Extracted release package | Alexander Scola | No missing local file, setup dependency or reproducibility failure was identified. A separate untouched extraction was scanned before running Python and contained no .git, virtual environments, __pycache__, .pytest_cache, .pyc, IDE metadata or Stage 8 temporary/recovery material. |
+Root README index and project/README verified: [Yes. Sebastian Riches verified the documentation during release preparation, and Alexander Scola independently reproduced the documented application/test workflow from an extracted source ZIP.]
+Fresh clone or extracted ZIP / candidate identity: [SmartCare-release.zip, generated from commit f2794c1734252868c509f6c63deedc85761ac1a1, was independently extracted and verified by Alexander Scola.]
+Verifier and clean environment / actual version: [Alexander Scola; separate extracted release directory; Python 3.13.14 using the available approved project Python environment. The extracted source did not depend on untracked files from the working repository.]
+Setup/run/test commands and observed results: [The extracted application ran successfully and python -m pytest reported 57 passed in 0.69s.]
+Missing local file or setup gap / remedy and recheck: [No missing file, setup dependency or reproducibility problem was identified. An untouched extraction was additionally scanned before execution and contained no prohibited Git metadata, environments, caches, compiled Python files, IDE metadata or Stage 8 recovery/temporary material.]
 
 
 ## G Known limitations debt and release notes
@@ -180,10 +182,10 @@ Common decision / PG decision where different: [Common UG decision: READY WITH D
 
 Exact common tested SHA: [7b99097f88cf671f6afbfd6dc715f2132cf83565 — verified on main with Python 3.13.14 and python -m pytest, resulting in 57 passed in 0.30s.]
 Exact PG tested SHA or not applicable: [Not applicable. All listed group members are UG and no PG Stage 10/11 implementation exists.]
-Final submitted SHA / repository URL: [Repository: https://github.com/Seb665/st1-assignment-3. Final submitted SHA is expected to be the final Stage 12 submission commit and will be recorded after the remaining evidence/package verification is complete.]
-Evidence-only later commit and difference explanation: [Pending. If a later commit changes only Stage 12 evidence, release notes or packaging metadata without changing executable source/tests, the final submission record will identify that later evidence-only SHA and retain 7b99097f88cf671f6afbfd6dc715f2132cf83565 as the tested executable release candidate.]
-Executable changes after testing and re-verification: [None after SHA 7b99097f88cf671f6afbfd6dc715f2132cf83565 at this point. Any later executable change would require another full regression run and a new tested release SHA.]
-Source ZIP name / SHA correspondence / extracted comparison: [Pending final source-ZIP creation and extracted-package verification.]
+Final submitted SHA / repository URL: [Repository: https://github.com/Seb665/st1-assignment-3. The final submitted SHA will be the final evidence commit containing the completed Stage 12 release record and will be supplied with the submission.]
+Evidence-only later commit and difference explanation: [f2794c1734252868c509f6c63deedc85761ac1a1 was an evidence/release-documentation commit made after the fully tested executable candidate 7b99097f88cf671f6afbfd6dc715f2132cf83565. No executable application behaviour or automated test behaviour changed in that later commit.]
+Executable changes after testing and re-verification: [None. No executable application or test changes were made after the fully tested candidate 7b99097f88cf671f6afbfd6dc715f2132cf83565.]
+Source ZIP name / SHA correspondence / extracted comparison: [SmartCare-release.zip was generated from commit f2794c1734252868c509f6c63deedc85761ac1a1 using git archive. SHA256: AF16AFF7DAD393A2E92D14F8A02BC1513F3E87A749C6DD720299621BB36C3FFA. The ZIP was extracted into a separate directory and independently verified by Alexander Scola using Python 3.13.14; python -m pytest reported 57 passed in 0.69s. A separate untouched extraction was scanned before execution and contained no prohibited Git metadata, environments, caches, compiled Python files, IDE metadata or Stage 8 recovery/temporary material.]
 
 
 ## L Submission package verification
@@ -191,24 +193,24 @@ Source ZIP name / SHA correspondence / extracted comparison: [Pending final sour
 - [x] Feature freeze and scoped requirements traced.
 - [x] Applicable full regressions, integrated demo and invalid paths verified.
 - [x] Architecture/code quality and final AI/dependency checks complete.
-- [ ] Root README and project/README reproduced by another verifier.
+- [x] Root README and project/README reproduced by another verifier.
 - [x] Release notes, technical debt and limitations visible.
 - [x] Independent human review, integration and release decision recorded.
-- [ ] Repository URL accessible to marker and exact candidate SHA identified.
-- [ ] One source ZIP from submitted commit with root README.md and .gitignore.
-- [ ] project/ source and all accumulated applicable tests included.
+- [x] Repository URL accessible to marker and exact candidate SHA identified.
+- [x] One source ZIP from submitted commit with root README.md and .gitignore.
+- [x] project/ source and all accumulated applicable tests included.
 - [x] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
-- [ ] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
-- [ ] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
+- [x] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
+- [x] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
 - [x] Mixed-group common protection and candidate upload routing checked.
 - [ ] Group reflection, confidential individual peer forms and common team viva routed separately.
 
-Confirmed assessment item/upload route: [Assignment 3 SmartCare Group Project in Canvas. The Assignment 3 overview identifies the submission type as a website URL. Stage 12 also requires one final group source ZIP generated from the exact submitted commit, the accessible repository URL, full submitted SHA and tested SHA.]
-Deadline/timezone: [Due 9 November 2026 at 23:59 following the published Canvas extension. The supplied Stage 12 handout does not independently establish a timezone, so the due time/timezone displayed in Canvas is authoritative.]
-Repository access arrangement: [One public GitHub repository is used for the group Assignment 3 project and must remain accessible to teaching staff. Repository: https://github.com/Seb665/st1-assignment-3.]
+Confirmed assessment item/upload route: [Assignment 3 SmartCare Group Project. The published assessment information identifies the repository/web submission and Stage 12 requires the source ZIP, accessible repository URL and release SHA information to correspond to the submitted candidate.]
+Deadline/timezone: [Due 9 November 2026 at 23:59 following the published Canvas extension. The due time/timezone displayed in Canvas is authoritative.]
+Repository access arrangement: [The group uses one public GitHub repository: https://github.com/Seb665/st1-assignment-3. Public access was checked while logged out of GitHub and the repository contents were accessible. The tested Stage 12 candidate SHA is 7b99097f88cf671f6afbfd6dc715f2132cf83565; the final submitted SHA will be the final evidence commit.]
 Mixed-candidate upload arrangement: [Not applicable to this group because all four members are UG. There is one common UG release candidate. The supplied Stage 10/11 PG templates remain unchanged and no separate PG candidate is submitted.]
-Oral/video recording/accessibility arrangements: [Each group member completes the Individual Oral Assessment through six recorded questions in Cadmus, assessing understanding of the common Assignment 3 project. Group members record themselves; screen recording or screen sharing is not required.]
-Remaining administration or release dependency: [Complete the final evidence-only commit, record the final submitted SHA, create the source ZIP from that exact commit, extract and verify the ZIP in a fresh location, confirm README reproducibility with another verifier where available and complete the separate group reflection, confidential individual peer forms and common Team Viva through their published submission routes.]
+Oral/video recording/accessibility arrangements: [Each group member completes the Individual Oral Assessment through six recorded questions in Cadmus concerning the common Assignment 3 project. Screen recording or screen sharing is not required.]
+Remaining administration or release dependency: [Obtain independent README/fresh-package reproduction from another member or tutor, confirm that the GitHub repository is publicly accessible to the marker, complete/confirm the separate group reflection and confidential peer-assessment routes, make the final evidence commit, regenerate the source ZIP from that exact final commit, and report the final submission SHA with the submission.]
 
 
 ## M Formative questions
