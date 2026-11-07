@@ -70,11 +70,10 @@ def run_demo() -> None:
 
 
 def run_menu() -> None:
-    """Stage 9: implement the register/find/book/cancel/list/exit menu.
+    """Run the completed Stage 9 register/find/book/cancel/list/exit menu.
 
     Call services, recover from expected input errors, and keep this
-    session's data until exit. main.py reports the incomplete menu
-    without crashing.
+    session's data until exit.
     """
     data_store = SmartCareDataStore()
     patients = PatientService(data_store)

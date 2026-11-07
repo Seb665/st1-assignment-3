@@ -7,9 +7,7 @@ from smartcare.console import run_demo, run_menu
 
 
 def main() -> None:
-    """Run the demo, or report the intentionally incomplete interactive
-    menu.
-    """
+    """Run the SmartCare demo or interactive menu."""
     parser = argparse.ArgumentParser(
         description='SmartCare teaching application',
     )

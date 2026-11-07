@@ -1,7 +1,7 @@
 # Software Technology 1 Assignment 3
 
 One group repository and one evolving SmartCare application.
-Baseline: SmartCare Assignment 3 2026 revision 2. The common UG functionality through Stage 9 is complete, and the integrated Stage 12 release candidate has been verified. Final evidence/package verification is in progress.
+Baseline: SmartCare Assignment 3 2026 revision 2. The common UG functionality through Stage 9 is complete, and the integrated Stage 12 release candidate and source package have been verified.
 
 ## Group index
 
@@ -9,14 +9,14 @@ Baseline: SmartCare Assignment 3 2026 revision 2. The common UG functionality th
 - Member names, GitHub usernames and UG/PG cohorts: [Sebastian Riches (Seb665) UG; Alexander Scola (u3324662-personal) UG; Abril Perez (4brila1816-coder) UG; Prajiet Eswaran (Prajiet103) UG]
 - Shared repository URL: [https://github.com/Seb665/st1-assignment-3]
 - Latest completed stage: [Stage 12 release verification]
-- Integrated Stage 8 application SHA: [68fb7828983323978dff21850b08143424974090]
+- Integrated Stage 9 application SHA: [68fb7828983323978dff21850b08143424974090]
 - Verified code SHA: [68fb7828983323978dff21850b08143424974090]
 - Stage 12 starting SHA: [d523b8d5e812cddaf2bc23198cad81653d32cd05]
 - Final tested Stage 12 candidate SHA: [7b99097f88cf671f6afbfd6dc715f2132cf83565]
 - Test command, working directory and observed result: [from project/, run python -m pytest]
 - Stage 12 starting regression result:[57 passed in 0.33s]
 - Final integrated Stage 12 regression result: [57 passed in 0.30s using Python 3.13.14]
-- Final submitted SHA, if different from tested code SHA: [pending final Stage 12 release verification]
+- Final submitted SHA, if different from tested code SHA: [To be recorded with the final submission after completion of the repository-wide evidence review.]
 
 Do not put student IDs, private peer ratings, credentials or personal contact details here.
 

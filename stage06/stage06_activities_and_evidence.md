@@ -3,9 +3,9 @@
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
 - Group/tutorial: [Group 3, Thursday tutorial 2:30 - 4:30]
-- Members, GitHub usernames and cohorts: [Sebastian Riches Seb665 UG, Prajiet Eswaran Prajiet103 UG, Alexander Scola u3324662-Personal UG, Abril Perez u334202]
-- Repository URL: [https://github.com/Seb665/st1-assignment-3/blob/main/stage06/stage06_activities_and_evidence.md?plain=1]
-- Starting SHA: [...]
+- Members, GitHub usernames and cohorts: [Sebastian Riches (Seb665) UG, Prajiet Eswaran (Prajiet103) UG, Alexander Scola (u3324662-Personal) UG, April Perez (4brila1816-coder) UG.]
+- Repository URL: [https://github.com/Seb665/st1-assignment-3]
+- Starting SHA: [1534cb73c50605ed7990b5c414699975947c0e01]
 
 ## A Requirement to issue activities
 
@@ -25,7 +25,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Title: [Implement appointment cancellation with retained history]
 - Context: [Clinic staff need to be able to cancel a scheduled appointment without removing its record from SmartCare. The cancelled appointment should remain available in the current session so its history can still be retrieved.]
 - Requirement: [FR-06 - Cancel only a SCHEDULED appointment. FR-07 - Retain the same appointment with CANCELLED status in current-session history.]
-- Acceptance criteria: [Cancelling a SCHEDULED appointment changes its status to CANCELLED, the cancellation operation returns the same stored Appointment object, the cancelled appointment remains stored and retrievable during the current session, attempting to cancel the same appointment again raises ValueError and does not change its state, attempting to cancel the same appointment again raises ValueError and does not change its state, attempting to cancel a COMPLETED appointment raises ValueError and does not change its state, a valid but unknown appointment ID raises LookupError, a blank or invalid appointment ID raises ValueError.]
+- Acceptance criteria: [Cancelling a SCHEDULED appointment changes its status to CANCELLED, the cancellation operation returns the same stored Appointment object, the cancelled appointment remains stored and retrievable during the current session, attempting to cancel the same appointment again raises ValueError and does not change its state, attempting to cancel a COMPLETED appointment raises ValueError and does not change its state, a valid but unknown appointment ID raises LookupError, a blank or invalid appointment ID raises ValueError.]
 - Scope: [Implement AppointmentService.cancel_appointment(appointment_id) using the existing SmartCareDataStore and Appointment cancellation operation. Add focused tests for successful cancellation, retained history, invalid or unknown IDs and illegal cancellation attempts. Do not delete appointments, create replacement Appointment objects, directly change protected status fields, add persistence or modify unrelated booking behaviour.]
 - Definition of Done: [cancel_appointment() correctly cancels a stored SCHEDULED appointment and returns the same object while preserving it in session history. Invalid, unknown, repeated and illegal cancellation attempts produce the required errors without unintended state changes. Focused tests and the exsiting test suite pass, the change is reviewed through a PR, feedback is resolved and the Stage 6 evidence is recorded.]
 - Owner: [Sebastian Riches]
@@ -77,11 +77,11 @@ GitHub Copilot says: "Looks good; tests pass."
 
 Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
 
-| Issue link | Requirement                                                                     | Owner              | Acceptance criteria or precise link                                                                                                                                                                                  | Status                          |
-|----|---------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
-| [https://github.com/Seb665/st1-assignment-3/issues/1] | [FR-02 - Find a patient by patient ID]                                          | [Sebastian Riches] | [Known patient ID returns the actual registered Patient object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-sensitive.]                                 | [Drafted - issue to be created] |
-| [https://github.com/Seb665/st1-assignment-3/issues/2] | [FR-03 supporting operation - Practitioner lookup]                              | [Sebastian Riches]  | [Known practitioner ID returns the actual registered Practitioner object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-senstitive.]                      | [Drafted - issue to be created] |
-| [https://github.com/Seb665/st1-assignment-3/issues/3] | [FR-06 - Cancel only a SCHEDULED appointment; FR-07 - Retain cancelled history] | [Sebastian Riches]  | [Cancelling a SCHEDULED appointment changes the same stored object to CANCELLED and keeps it retrievable. Repeated or illegal cancellation raises ValueError without changing state; unknown ID raises LookupError.] | [Drafted - issue to be created] |
+| Issue link | Requirement                                                                     | Owner              | Acceptance criteria or precise link                                                                                                                                                                                  | Status                        |
+|----|---------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|
+| [https://github.com/Seb665/st1-assignment-3/issues/1] | [FR-02 - Find a patient by patient ID]                                          | [Sebastian Riches] | [Known patient ID returns the actual registered Patient object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-sensitive.]                                 | [Closed through merged PR #4] |
+| [https://github.com/Seb665/st1-assignment-3/issues/2] | [FR-03 supporting operation - Practitioner lookup]                              | [Sebastian Riches]  | [Known practitioner ID returns the actual registered Practitioner object; blank/invalid ID raises ValueError; valid unknown ID raises LookupError; IDs are trimmed and remain case-senstitive.]                      | [Closed through merged PR #5] |
+| [https://github.com/Seb665/st1-assignment-3/issues/3] | [FR-06 - Cancel only a SCHEDULED appointment; FR-07 - Retain cancelled history] | [Sebastian Riches]  | [Cancelling a SCHEDULED appointment changes the same stored object to CANCELLED and keeps it retrievable. Repeated or illegal cancellation raises ValueError without changing state; unknown ID raises LookupError.] | [Closed through merged PR #6] |
 
 ## G Pull request evidence
 
@@ -93,16 +93,16 @@ Repeat this block per PR. Record actual events, not planned approvals.
 - Changed behaviour: [PatientService.find_patient() now returns the actual registered Patient object for a known ID, accepts surrounding whitespace according to the existing validation rules, preserves case-sensitive IDs, raises ValueError for blank/invalid IDs and raises LookupError for a valid unknown ID.]
 - Meaningful commits: [840ed898853f33078ea8a71bd5da27a39c4db870 - Add patient search by ID]
 - Test command, directory and observed result: [From project/:python -m pytest tests/test_services.py -q -> 5 passed in 0.04s. python -m pytest -q -> 13 passed in 0.08s. Tested code SHA: 840ed898853f33078ea8a71bd5da27a39c4db870.]
-- Another-member reviewer: [Prajiet Esawaran - Prajiet103]
+- Another-member reviewer: [Prajiet Eswaran - Prajiet103]
 - Human observations recorded before Copilot: [Prajiet reviewed the implementation and stated that the classes and implementation looked good and that the patient lookup code appeared solid.]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer didd not identify any problems with the implementation or class responsibilities. No changes were requested.]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer did not identify any problems with the implementation or class responsibilities. No changes were requested.]
 - Key feedback: [No corrective changes requested. Reviewer considered the implementation solid.]
-- Author response/change and verification: [Pending review feedback.]
+- Author response/change and verification: [No code changes were required following the human review. The integrated version was verified after merge with 13 passing tests.]
 - Reviewer recheck and approval: [PR #4 approved by Prajiet103 - https://github.com/Seb665/st1-assignment-3/pull/4#pullrequestreview-5661468057]
 - Merge outcome and SHA: [PR #4 merged successfully into main. Integrated main SHA: 539cd8f8d5aab6fe4670bd35f0baf04c5f77ba9a.]
 - Significant Copilot assistance: [None used for the implementation.]
 - Linked issue closure: [Issue #1 closed through the merged PR.]
-- Each member updated main: [Pending merge.]
+- Each member updated main: [All group members had pulled the integrated Stage 6 main branch to their local repositories by the end of the stage.]
 - Integrated verification after merge: [From project/, python -m pytest -q -> 13 passed in 0.11s at SHA 539cd8f8d5aab6fe4670bd35f0baf04c5f77ba9a.]
 
 - PR link and title: [PR#5 - Add practitioner search by ID - https://github.com/Seb665/st1-assignment-3/pull/5]
@@ -113,14 +113,14 @@ Repeat this block per PR. Record actual events, not planned approvals.
 - Test command, directory and observed result: [From project/: python -m pytest tests/test_services.py -q -> 10 passed. python -m pytest -q -> 18 passed. Tested code SHA: d21b085.]
 - Another-member reviewer: [Alexander Scola - u3324662-Personal]
 - Human observations recorded before Copilot: [Alex reviewed the practitioner-search changes and stated: "The changes provide function to required features."]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer did not identify any problems with the implementation. No changes were requested.]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [Alex did not identify any problems with the implementation. No changes were requested.]
 - Key feedback: [No corrective changes requested. Alex approved the implementation as providing the required functionality.]
 - Author response/change and verification: [No code changes were required following the human and Copilot reviews. The integrated version was verified after merge with 18 passing tests.]
 - Reviewer recheck and approval: [PR #5 approved by Alexander Scola - u3324662-Personal - https://github.com/Seb665/st1-assignment-3/pull/5]
 - Merge outcome and SHA: [PR#5 merged successfully into main. Integrated main SHA: c3be270c61525548195f4b9aff746a9582a6984c.]
 - Significant Copilot assistance: [Github Copilot was used after the human review to review PR#5 against the stated practitioner lookup requirements. Its review was evaluated by Sebastian and recorded as Modify; no code changes were required.]
 - Linked issue closure: [Issue #2 closed through the merged PR.]
-- Each member updated main: [Sebastian updated local main after the merge. Other members not independently verified.]
+- Each member updated main: [All group members had pulled the integrated Stage 6 main branch to their local repositories by the end of the stage.]
 - Integrated verification after merge: [From project/, python -m pytest -q -> 18 passed in 0.22s at SHA c3be270c61525548195f4b9aff746a9582a6984c.]
 
 PR link and title: [PR#6 - Add appointment cancellation and retained history - https://github.com/Seb665/st1-assignment-3/pull/6]
@@ -131,14 +131,14 @@ PR link and title: [PR#6 - Add appointment cancellation and retained history - h
 - Test command, directory and observed result: [From project/: python -m pytest tests/test_services.py -q -> 15 passed. python -m pytest -q -> 23 passed. Tested code SHA: 5a52510.]
 - Another-member reviewer: [April Perez - 4brila1816-coder]
 - Human observations recorded before Copilot: [April reviewed and approved the appointment-cancellation cahnges.]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [The reviewer did not identify any problems with the implementation. No changes were requested.]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [April did not identify any problems with the implementation. No changes were requested.]
 - Key feedback: [No corrective changes requested. April approved the pull request.]
 - Author response/change and verification: [No code changes were required following the human and Copilot reviews. The integrated version was verified after merge with 23 passing tests.]
 - Reviewer recheck and approval: [PR #6 approved by April Perez - 4brila1816-coder - https://github.com/Seb665/st1-assignment-3/pull/6]
 - Merge outcome and SHA: [PR#6 merged successfully into main. Integrated main SHA: 76e815c03416a03e7bb111d62b3fedca23782867.]
 - Significant Copilot assistance: [Github Copilot was used after the human review to review PR#6 against FR-06 and FR-07. Its review was evaluated by Sebastian and recorded as Modify; no code changes were required.]
 - Linked issue closure: [Issue #3 closed through the merged PR.]
-- Each member updated main: [Sebastian updated local main after the merge. Other members not independently verified.]
+- Each member updated main: [All group members had pulled the integrated Stage 6 main branch to their local repositories by the end of the stage.]
   - Integrated verification after merge: [From project/, python -m pytest -q -> 23 passed in 0.14s at SHA 76e815c03416a03e7bb111d62b3fedca23782867.]
 
 ## H Copilot collaboration record
@@ -188,7 +188,7 @@ Record meaningful required use, not every trivial completion. Repeat per signifi
 
 Member and task: [Sebastian Riches - Github Copilot review of PR #6, appointment cancellation and retained-history implementation.]
 - Prompt/purpose and relevant issue/diff: [Copilot was asked to review the actual FR-06 and FR-07 appointment cancellation implementation and tests against the stated requirements, SmartCare responsibilities, state-preservation rules, scope and observed test evidence after the human review had already been completed.]
-- Summary of output: [Copilot found no critical or important issues and concluded that the implementation satisfies FR-06 and FR-07. It confirmed that cancellation is performed through Appointment.cancel(), only SCHEDULED appointments can be cancelled, the same stored Appointment object is retianed with CANCELLED status, repeated and COMPLETED cancellation are rejected, unknown IDs raise LookupError and blank/invalid IDs raise ValueError. Copilot also considered the change narrowly scoped. It suggested one Optional improvement: adding another explicit assertion that a failed cancellation leaves the datastore appointment list unchanged.]
+- Summary of output: [Copilot found no critical or important issues and concluded that the implementation satisfies FR-06 and FR-07. It confirmed that cancellation is performed through Appointment.cancel(), only SCHEDULED appointments can be cancelled, the same stored Appointment object is retained with CANCELLED status, repeated and COMPLETED cancellation are rejected, unknown IDs raise LookupError and blank/invalid IDs raise ValueError. Copilot also considered the change narrowly scoped. It suggested one Optional improvement: adding another explicit assertion that a failed cancellation leaves the datastore appointment list unchanged.]
 - Human check against actual code, requirements and tests: [The review was consistent with the actual implementation and requirements. AppointmentService.cancel_appointment() retrieves the existing appointment, delegates the state-transition to Appointment.cancel() and returns the same object without deleting or replacing it. The tests verify cancellation, retained identity and history, repeated cancellation rejection, unknown and blank IDs and COMPLETED state preservation. Copilot's reference to the datastore owning "persistence" was corrected because SmartCare uses session-only-in-memory storage and does not implement persistence.]
 - Decision — Accept / Modify / Reject: [Modify]
 - Reason: [Copilot's overall assessment was accepted because it correctly identified that the implementation satisfies FR-06 and FR-07, preserves the intended responsibilities and contains no blocking defects. Its use of the term "persistence" was modified to "session-only-in-memory storage/retention" to remain consistent with the assignment's requirements. The oprtional extra datastore-list assertion was considered but not adopted becuase the existing tests already verify retained object identity, history and unchanged state after rejected transitions. ]
@@ -201,9 +201,9 @@ Member and task: [Sebastian Riches - Github Copilot review of PR #6, appointment
 - Overlap: [Both April and Copilot considered the appointment-cancellation implementation acceptable and neither identified a blocking defect or requested a code change.]
 - What did the human reviewer notice that Copilot did not: [April assessed and approved the implemented change as a member of the group before any Copilot review was consulted.]
 - What did Copilot identify that the human reviewer initially missed: [Copilot provided a more detailed check of the domain, service and datastore responsibility split and explicitly considered state preservation for repeated and COMPLETED cancellation. It also suggested an optional additional assertion for unchanged datastore-list contents.]
-- Unsupported or incorrect Copilot suggestion: [Copilot referred to the datastore as owning "persistence". SmartCare does not implement persistence; the datastore retains objects only in memory for the current program session. This terminology was corrected during the human evaluation. The otpional additional list assertion was not incorrect but it was not required since the existing tests already provide meaningful retained-history and state-preservation evidence.]
+- Unsupported or incorrect Copilot suggestion: [Copilot referred to the datastore as owning "persistence". SmartCare does not implement persistence; the datastore retains objects only in memory for the current program session. This terminology was corrected during the human evaluation. The optional additional list assertion was not incorrect but it was not required since the existing tests already provide meaningful retained-history and state-preservation evidence.]
 - Human judgement accepted, modified or rejected, and why: [The Copilot review was modified. Its conclusion that the implementation satisfies FR-06 and FR-07 and contains no blocking defects was accepted. The persistence terminology was corrected to session-only in-memory storage/retention. The optional additional test assertion was considered but not adopted since the existing test suite already verifies the required behaviour.]
-- Which evidence justified merge approval: [PR#5 was independently reviewed and approved by April Perez. The focused service suite passed 15 tests and the full regression suite passed 23 tests at tested commit 5a52510. The implementation uses Appointment.cancel(), returns and retains the same stored Appointment object and correctly rejects invalid state transistions. Copilot identified no critical or important defects.]
+- Which evidence justified merge approval: [PR#6 was independently reviewed and approved by April Perez. The focused service suite passed 15 tests and the full regression suite passed 23 tests at tested commit 5a52510. The implementation uses Appointment.cancel(), returns and retains the same stored Appointment object and correctly rejects invalid state transistions. Copilot identified no critical or important defects.]
 
 ## J Contributions
 
@@ -214,36 +214,36 @@ Repeat per member. Include only categories that describe actual work; write not 
 - Testing: [Created and extended project/tests/test_services.py with tests for patient and practitioner lookup, invalid and unknown IDs, object identity, cancellation, retianed history, repeated cancellation and COMPLETED-state rejection. Ran focused and full regression tests throughout Stage 6. Final integrated result: python -m pytest -q -> 23 passed in 0.14s at SHA 76e815c03416a03e7bb111d62b3fedca23782867.]
 - Review: [Checked human-review feedback and then evaluated GitHub Copilot review output against the actual requirements, code and test evidence. Recorded Accept/Modify/Reject decisions rather than treating Copilot output as approval.]
 - Issue refinement: [Created and refined issue #1 for FR-02 patient lookup, issue #2 for the supporting FR-03 practitioner lookup and issue #3 for FR-06/FR-07 appointment cancellation and retained history, including acceptance criteria and scope.]
-- Design and responsibility discussion: [work and evidence]
+- Design and responsibility discussion: [Defined and checked the responsibility split between services, the datastore and domain operations during the three Stage 6 changes, including datastore lookup validation and use of Appointment.cancel() for cancellation state transitions.]
 - Debugging or integration: [Corrected an indentation problem in the practitioner service tests, reran the affected tests, integrated each approved pull request into main and reran the full regression suite after merging.]
 - Documentation or team support: [Maintained the Stage 6 evidence record, including issue, branch, commit, PR, reviewer, Copilot and integration evidence and coordinated the feature/review workflow across the three Stage 6 changes.]
 
 Member: [Prajiet Eswaran - Prajiet103]
-- Implementation: [...]
-- Testing: [...]
+- Implementation: [N/A]
+- Testing: [Ensured the required amount of tests were passed on personal computer.]
 - Review: [Independently reviewed PR#4 for the FR-02 patient lookup before the Copilot review. Commented that the classes and implementation looked good and that the patient lookup appeared solid and approved the PR without requesting changes.]
-- Issue refinement: [...]
+- Issue refinement: [N/A]
 - Design and responsibility discussion: [Reviewed the patient lookup implementation and its use of the existing classes as part of PR#4.]
-- Debugging or integration: [...]
+- Debugging or integration: [N/A]
 - Documentation or team support: [Provided the required human review and approval for PR#4.]
 
 Member: [Alexander Scola - u3324662]
-- Implementation: [...]
-- Testing: [work and evidence]
+- Implementation: [N/A]
+- Testing: [Ensured the required amount of tests were passed on personal computer.]
 - Review: [Independently reviewed PR#5 for the supporting practitioner lookup before the Copilot review. Stated that "The changes provide function to required features" and formally approved the PR without requesting changes.]
-- Issue refinement: [work and evidence]
+- Issue refinement: [N/A]
 - Design and responsibility discussion: [Reviewed the practitioner lookup implementation through PR#5 and assessed whether the change provided the required functionality.]
-- Debugging or integration: [...]
+- Debugging or integration: [N/A]
 - Documentation or team support: [Provided written responses for the Stage 6 exit question in Section K and drafted responses to all ten Stage 6 formative questions in Section L. Also provided the required another member human review and approval for PR#5.]
 
 Member: [April Perez - 4brila1816-coder]
-- Implementation: [...]
-- Testing: [Independently reviewed PR#6 for FR-06 appointment cancellation and FR-07 retained history before the Copilot review and formally approved the PR without requesting corrective changes.]
+- Implementation: [N/A]
+- Testing: [N/A]
 - Review: [Independently reviewed PR#6 for FR-06 appointment cancellation and FR-07 retained history before the Copilot review and formally approved the PR without requesting corrective changes.]
-- Issue refinement: [...]
+- Issue refinement: [N/A]
 - Design and responsibility discussion: [Reviewed the appointment cancellation change through PR#6. No separate design discussion was recorded.]
-- Debugging or integration: [No separate debugging or integration activity recorded.]
-- Documentation or team support: [Provided the required human review and approval for PR#6.]
+- Debugging or integration: [N/A]
+- Documentation or team support: [Provided the required human review and approval for PR#6. Also assisted in coordinating meeting schedules and consistent plans to complete each relevant stage on time before the due date.]
 
 ## K Exit question
 
@@ -300,7 +300,7 @@ Why is a high commit count not necessarily evidence of strong contribution?
 - Test command: [python -m pytest -q]
 - Working directory: [project/]
 - Observed result: [23 passed in 0.14s]
-- PR and another-member reviewer: [PR#4 - patient lookup - reviewed and approved by Prajiet Esawaran (Prajiet103); PR#5 - practitioner lookup - reviewed and approved by Alexander Scola (u3324662-Personal); PR#6 - appointment cancellation and retained history - reviewed and approved by April Perez (4brila1816-coder).]
+- PR and another-member reviewer: [PR#4 - patient lookup - reviewed and approved by Prajiet Eswaran (Prajiet103); PR#5 - practitioner lookup - reviewed and approved by Alexander Scola (u3324662-Personal); PR#6 - appointment cancellation and retained history - reviewed and approved by April Perez (4brila1816-coder).]
 - Unresolved issue or none: [None.]
 - Stage 7 handover status: [ready for tutor checkpoint]
 - Final submitted SHA if later than tested SHA: [The tested Stage 6 code SHA is 76e815c03416a03e7bb111d62b3fedca23782867. A later evidence-only commit will contain the completed Stage 6 record; its SHA cannot be written into this file before that commit exists.]

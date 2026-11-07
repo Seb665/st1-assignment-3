@@ -32,9 +32,8 @@ class PatientService:
     def find_patient(self, patient_id: str) -> Patient:
         """Return the stored patient for a valid patient ID.
 
-        Completion must raise LookupError for absence and ValueError for
+        Raise LookupError for absence and ValueError for
         a blank/invalid ID. It must not create a replacement patient.
-        The starter deliberately raises NotImplementedError.
         """
         patient = self.data_store.find_patient(patient_id)
 
@@ -72,10 +71,9 @@ class PractitionerService:
     def find_practitioner(self, practitioner_id: str) -> Practitioner:
         """Return the stored practitioner for a valid ID.
 
-        Completion must raise LookupError for absence and ValueError for
+        Raise LookupError for absence and ValueError for
         a blank/invalid ID. It must not create a replacement
-        practitioner. The starter deliberately raises
-        NotImplementedError.
+        practitioner.
         """
         practitioner = self.data_store.find_practitioner(practitioner_id)
 

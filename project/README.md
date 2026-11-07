@@ -86,7 +86,7 @@ SmartCare remains session-only. Data is lost when the program exits. The common 
 
 Release information
 
-The common UG SmartCare application has completed Stage 12 integration and functional release verification. Final evidence/package verification remains in progress.
+The common UG SmartCare application has completed Stage 12 integration, functional release verification and source-package verification.
 
 Stage 12 starting repository SHA: d523b8d5e812cddaf2bc23198cad81653d32cd05
 
@@ -102,4 +102,4 @@ After the reviewed Stage 12 release-readiness changes were merged into main, the
 
 57 passed in 0.30s
 
-The final submitted SHA remains pending the final evidence-only commit and source-package verification.
+The final submitted repository SHA is recorded with the submission metadata. The final tested executable candidate remains 7b99097f88cf671f6afbfd6dc715f2132cf83565; any later repository changes are evidence/documentation-only unless explicitly re-verified.

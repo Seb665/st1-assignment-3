@@ -1,4 +1,4 @@
-"""Focused tests for Stage 6 service operations."""
+"""Focused tests for Smartcare service operations."""
 
 from datetime import datetime
 
