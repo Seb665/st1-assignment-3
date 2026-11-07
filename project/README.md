@@ -86,13 +86,13 @@ SmartCare remains session-only. Data is lost when the program exits. The common 
 
 Release information
 
-The common UG SmartCare application has completed Stage 12 integration, functional release verification and source-package verification.
+The common UG SmartCare application has completed Stage 12 integration and functional release verification. The final source package will be generated from the final submitted commit.
 
 Stage 12 starting repository SHA: d523b8d5e812cddaf2bc23198cad81653d32cd05
 
 Integrated Stage 9 application SHA: 68fb7828983323978dff21850b08143424974090
 
-Final tested Stage 12 candidate SHA: 7b99097f88cf671f6afbfd6dc715f2132cf83565
+Final tested Stage 12 candidate SHA: ccb5557d9a08c28f34473a01ef73947f975fccf2
 
 At the Stage 12 starting SHA, the complete automated test suite reported:
 
@@ -102,4 +102,4 @@ After the reviewed Stage 12 release-readiness changes were merged into main, the
 
 57 passed in 0.30s
 
-The final submitted repository SHA is recorded with the submission metadata. The final tested executable candidate remains 7b99097f88cf671f6afbfd6dc715f2132cf83565; any later repository changes are evidence/documentation-only unless explicitly re-verified.
+The final tested executable checkpoint is ccb5557d9a08c28f34473a01ef73947f975fccf2, verified using Python 3.13.14 with 57 tests passing in 0.30s. The final submitted repository SHA will be the later evidence-only commit that records the completed release metadata; no executable application or automated test changes are being made after this tested checkpoint.
