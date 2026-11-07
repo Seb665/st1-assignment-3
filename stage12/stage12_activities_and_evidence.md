@@ -192,11 +192,11 @@ Source ZIP name / SHA correspondence / extracted comparison: [Source ZIP name / 
 - [x] Release notes, technical debt and limitations visible.
 - [x] Independent human review, integration and release decision recorded.
 - [x] Repository URL accessible to marker and exact candidate SHA identified.
-- [ ] One source ZIP from submitted commit with root README.md and .gitignore.
-- [ ] project/ source and all accumulated applicable tests included.
+- [x] One source ZIP from submitted commit with root README.md and .gitignore.
+- [x] project/ source and all accumulated applicable tests included.
 - [x] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
-- [ ] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
-- [ ] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
+- [x] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
+- [x] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
 - [x] Mixed-group common protection and candidate upload routing checked.
 - [ ] Group reflection, confidential individual peer forms and common team viva routed separately.
 
@@ -205,7 +205,7 @@ Deadline/timezone: [Due 9 November 2026 at 23:59 following the published Canvas 
 Repository access arrangement: [The group uses one public GitHub repository: https://github.com/Seb665/st1-assignment-3. Public access was checked while logged out of GitHub and the repository contents were accessible. The final tested Stage 12 code checkpoint is ccb5557d9a08c28f34473a01ef73947f975fccf2; the final submitted SHA will be the later evidence-only commit.]
 Mixed-candidate upload arrangement: [Not applicable to this group because all four members are UG. There is one common UG release candidate. The supplied Stage 10/11 PG templates remain unchanged and no separate PG candidate is submitted.]
 Oral/video recording/accessibility arrangements: [Each group member completes the Individual Oral Assessment through six recorded questions in Cadmus concerning the common Assignment 3 project. Screen recording or screen sharing is not required.]
-Remaining administration or release dependency: [The repository-wide review and final code regression are complete. Remaining release work is to make this final evidence-only documentation commit, generate SmartCare-release.zip from the resulting repository state, inspect the extracted package for excluded files and repeat the full regression suite from the extracted package before upload. The final submitted SHA will be supplied with the submission. The separate group reflection, confidential individual peer assessment and Individual Oral Assessment remain completed/submitted through their published assessment routes as applicable.]
+Remaining administration or release dependency: [Final repository and package verification are complete. SmartCare-release.zip was generated from the final submission state, extracted into a separate verification directory and the full regression suite passed with 57 tests. The separate group reflection, confidential individual peer assessment and Individual Oral Assessment remain completed/submitted through their published assessment routes as applicable.]
 
 
 ## M Formative questions
